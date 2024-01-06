@@ -1,0 +1,25 @@
+<launch>
+    <arg name="ns"              default="robot_0" />
+    <arg name="init_pose"       default="-x 0 -y 0 -Y 0" />
+    <arg name="twist_marker"    default="true" />
+
+    <!-- Launch robot controller -->
+    <include file="$(find robot_pkg)/control/control.launch" >
+        <arg name="ns"              value="$(arg ns)" />
+    </include>
+
+    <param name="/$(arg ns)/robot_description"
+        command="$(find xacro)/xacro 
+                $(find robot_pkg)/models/robot_description.xacro
+                namespace:=$(arg ns)"/>
+  
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="$(arg ns)">
+        <param name="tf_prefix"             value="$(arg ns)" />
+        <param name="robot_description"     value="/$(arg ns)/robot_description" />
+    </node>
+
+    <!-- Spawn Robot in Gazebo -->
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" ns="$(arg ns)"
+          args="-urdf -model $(arg ns) -param /$(arg ns)/robot_description $(arg init_pose) -z 1" />
+
+</launch>

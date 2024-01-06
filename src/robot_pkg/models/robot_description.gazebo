@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot>
+
+    <!-- IMU plugin -->
+    <gazebo>
+        <plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
+        <robotNamespace>/$(arg namespace)</robotNamespace>
+        <updateRate>50.0</updateRate>
+        <bodyName>imu_link</bodyName>
+        <topicName>imu/data</topicName>
+        <frameId>$(arg namespace)/base_link</frameId>
+        <accelDrift>0.00 0.00 0.00</accelDrift>
+        <accelGaussianNoise>0.001 0.001 0.001</accelGaussianNoise>
+        <rateDrift>0.00 0.00 0.00 </rateDrift>
+        <rateGaussianNoise>0.001 0.001 0.001 </rateGaussianNoise>
+        <yawDrift>0.00</yawDrift>
+        <yawGaussianNoise>0.001</yawGaussianNoise>
+        </plugin>
+    </gazebo>
+
+    <!-- Chassis link -->
+    <gazebo reference="body">
+        <material>Gazebo/Green</material>
+    </gazebo>
+
+    <!-- Right wheel link -->
+    <gazebo reference="right_wheel">
+        <mu1>0.5</mu1>
+        <mu2>0.5</mu2>
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- Left wheel link -->
+    <gazebo reference="left_wheel">
+        <mu1>0.5</mu1>
+        <mu2>0.5</mu2>
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- Rear wheel link -->
+    <gazebo reference="rear_wheel">
+        <mu1>0</mu1>
+        <mu2>0</mu2>
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- Front wheel link -->
+    <gazebo reference="front_wheel">
+        <mu1>0</mu1>
+        <mu2>0</mu2>
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+</robot>

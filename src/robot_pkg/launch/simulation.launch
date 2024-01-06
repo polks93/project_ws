@@ -1,0 +1,45 @@
+<launch>
+    <!-- Gazebo parameters -->
+    <arg name="use_sim_time"    default="true" />
+    <arg name="gui"             default="true" />
+    <arg name="headless"        default="false" />
+    <arg name="debug"           default="false" />
+    <arg name="paused"          default="false" />
+    <!-- <arg name="world_name"      default="$(find srd_pkg)/worlds/cafe.world" /> -->
+
+    <!-- Robot 1 parameters -->
+    <arg name="ns_1"              default="robot_1" />
+    <arg name="init_pose_1"       default="-x 0 -y 0 -z 0" />
+
+    <!-- Robot 2 parameters -->
+    <arg name="ns_2"              default="robot_2" />
+    <arg name="init_pose_2"       default="-x 2 -y 0 -z 0" />   
+
+    <!-- Launch Gazebo -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" >
+        <arg name="debug"           value="$(arg debug)" />
+        <arg name="gui"             value="$(arg gui)" />
+        <arg name="use_sim_time"    value="$(arg use_sim_time)" />
+        <arg name="headless"        value="$(arg headless)" />
+        <!-- <arg name="world_name"      value="$(arg world_name)" /> -->
+        <arg name="paused"          value="$(arg paused)" />
+    </include>
+    
+    <!-- Launch Robot 1-->
+    <include file="$(find robot_pkg)/models/launch/robot_spawner.launch" >
+        <arg name="ns"              value="$(arg ns_1)" />
+        <arg name="init_pose"       value="$(arg init_pose_1)" />
+    </include>
+
+    <!-- Launch Robot 2-->
+    <!-- <include file="$(find robot_pkg)/models/launch/robot_spawner.launch" >
+        <arg name="ns"              value="$(arg ns_2)" />
+        <arg name="init_pose"       value="$(arg init_pose_2)" />
+    </include> -->
+    <include file="$(find robot_pkg)/navigation/mapping.launch" >
+        <arg name="ns"      value="robot_1" />
+    </include>
+    
+    <node type="rviz" name="rviz" pkg="rviz" output="screen"/>
+
+</launch>

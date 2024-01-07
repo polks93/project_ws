@@ -5,7 +5,7 @@
     <arg name="headless"        default="false" />
     <arg name="debug"           default="false" />
     <arg name="paused"          default="false" />
-    <!-- <arg name="world_name"      default="$(find srd_pkg)/worlds/cafe.world" /> -->
+    <arg name="world_name"      default="$(find simulation)/worlds/dund_miff.world" />
 
     <!-- Robot 1 parameters -->
     <arg name="ns_1"              default="robot_1" />
@@ -21,7 +21,7 @@
         <arg name="gui"             value="$(arg gui)" />
         <arg name="use_sim_time"    value="$(arg use_sim_time)" />
         <arg name="headless"        value="$(arg headless)" />
-        <!-- <arg name="world_name"      value="$(arg world_name)" /> -->
+        <arg name="world_name"      value="$(arg world_name)" />
         <arg name="paused"          value="$(arg paused)" />
     </include>
     

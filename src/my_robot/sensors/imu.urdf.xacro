@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:macro name="imu" params="xyz rpy parent">
+    <joint name="imu_joint" type="fixed">
+        <parent link="${parent}"/>
+        <child link="imu_link"/>
+        <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <link name="imu_link">
+        <inertial>
+        <mass value="1e-5"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="1e-9" ixy="0.0" ixz="0.0" iyy="1e-9" iyz="0.0" izz="1e-9"/>
+        </inertial>
+    </link>
+</xacro:macro>
+</robot>

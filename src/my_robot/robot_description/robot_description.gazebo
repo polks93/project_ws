@@ -2,19 +2,87 @@
 <robot>
 
     <!-- IMU plugin -->
+    <gazebo reference="imu_link">
+        <gravity>true</gravity>
+        <sensor name="imu_sensor" type="imu">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <visualize>true</visualize>
+        <topic>__default_topic__</topic>
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+            <robotNamespace>/$(arg namespace)</robotNamespace>
+            <topicName>imu</topicName>
+            <bodyName>imu_link</bodyName>
+            <updateRateHZ>10.0</updateRateHZ>
+            <gaussianNoise>0.0</gaussianNoise>
+            <xyzOffset>0 0 0</xyzOffset>
+            <rpyOffset>0 0 0</rpyOffset>
+            <frameName>$(arg namespace)/imu_link</frameName>
+            <initialOrientationAsReference>false</initialOrientationAsReference>
+        </plugin>
+        <pose>0 0 0 0 0 0</pose>
+        </sensor>
+    </gazebo>
+
+    <!-- Laser plugin -->
+    <gazebo reference="hokuyo_laser_link">
+        <gravity>true</gravity>
+        <sensor type="ray" name="head_hokuyo_sensor">
+            <pose>0 0 0 0 0 0</pose>
+            <visualize>false</visualize>
+            <update_rate>40</update_rate>
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>360</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-3.14159</min_angle>
+                        <max_angle>3.14159</max_angle>
+                    </horizontal>
+                </scan>
+                <range>
+                    <min>0.2</min>
+                    <max>20</max>
+                    <resolution>0.025</resolution>
+                </range>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.0</stddev>
+                </noise>
+            </ray>
+            <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+                <robotNamespace> /$(arg namespace) </robotNamespace>
+                <topicName>laser_scan</topicName>
+                <frameName>$(arg namespace)/hokuyo_laser_link</frameName>
+            </plugin>      
+        </sensor>
+    </gazebo>
+    
+    <!-- Gazebo differential drive plugin -->
     <gazebo>
-        <plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
-        <robotNamespace>/$(arg namespace)</robotNamespace>
-        <updateRate>50.0</updateRate>
-        <bodyName>imu_link</bodyName>
-        <topicName>imu/data</topicName>
-        <frameId>$(arg namespace)/base_link</frameId>
-        <accelDrift>0.00 0.00 0.00</accelDrift>
-        <accelGaussianNoise>0.001 0.001 0.001</accelGaussianNoise>
-        <rateDrift>0.00 0.00 0.00 </rateDrift>
-        <rateGaussianNoise>0.001 0.001 0.001 </rateGaussianNoise>
-        <yawDrift>0.00</yawDrift>
-        <yawGaussianNoise>0.001</yawGaussianNoise>
+        <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+            <robotNamespace>/$(arg namespace)</robotNamespace>
+            <alwaysOn>true</alwaysOn>
+            <legacyMode>false</legacyMode>
+            <updateRate>50</updateRate>
+            <leftJoint>left_wheel_joint</leftJoint>
+            <rightJoint>right_wheel_joint</rightJoint>
+            <wheelSeparation>${body_width + control_wheel_lenght}</wheelSeparation>
+            <wheelDiameter>${2 * control_wheel_radius}</wheelDiameter>
+            <wheelTorque>10</wheelTorque>
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>$(arg namespace)/odom</odometryFrame>
+            <robotBaseFrame>$(arg namespace)/base_link</robotBaseFrame>
+            <publishWheelTF>false</publishWheelTF>
+            <publishOdomTF>true</publishOdomTF>
+            <publishWheelJointState>true</publishWheelJointState>
+            <wheelAcceleration>0</wheelAcceleration>
+            <odometrySource>world</odometrySource>
+            <wheelAcceleration>1</wheelAcceleration>
+            <publishTf>1</publishTf>
+            <rosDebugLevel>na</rosDebugLevel>
         </plugin>
     </gazebo>
 

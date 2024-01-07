@@ -20,6 +20,6 @@
 
     <!-- Spawn Robot in Gazebo -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" ns="$(arg ns)"
-          args="-urdf -model $(arg ns) -param /$(arg ns)/robot_description $(arg init_pose) -z 1" />
+          args="-urdf -model $(arg ns) -param /$(arg ns)/robot_description $(arg init_pose)" />
 
 </launch>

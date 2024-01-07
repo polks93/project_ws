@@ -28,11 +28,11 @@
     </group>
 
     <!-- Move base node -->
-    <!-- <group if="$(arg move_base)" >
-        <include file="$(find srd_pkg)/jackal/jackal_navigation/launch/move_base.launch" >
+    <group if="$(arg move_base)" >
+        <include file="$(find localization)/launch/move_base.launch" >
             <arg name="ns" value="$(arg ns)" />
         </include>
-    </group> -->
+    </group>
     
     <!-- Spawn Robot in Gazebo -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" ns="$(arg ns)"

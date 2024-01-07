@@ -42,10 +42,10 @@
     </include>
 
     <!-- Launch Robot 2-->
-    <include file="$(find my_robot)/launch/robot_spawner.launch" >
+    <!-- <include file="$(find my_robot)/launch/robot_spawner.launch" >
         <arg name="ns"              value="$(arg ns_2)" />
         <arg name="init_pose"       value="$(arg init_pose_2)" />
-    </include>
+    </include> -->
     
     <!-- <include file="$(find navigation)/launch/mapping.launch" >
         <arg name="ns"      value="robot_1" />

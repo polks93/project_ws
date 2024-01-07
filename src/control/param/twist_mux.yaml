@@ -7,10 +7,10 @@ topics:
   topic   : cmd_vel_input
   timeout : 0.5
   priority: 1
-# - name    : move_base
-#   topic   : move_base/cmd_vel
-#   timeout : 0.5
-#   priority: 9
+- name    : move_base
+  topic   : move_base/cmd_vel
+  timeout : 0.5
+  priority: 9
 locks:
 - name    : e_stop
   topic   : e_stop

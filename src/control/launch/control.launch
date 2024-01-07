@@ -4,7 +4,7 @@
     
     <!-- Multiplex to handle different cmd_vel input -->
     <node pkg="twist_mux" type="twist_mux" name="twist_mux" ns="$(arg ns)" >
-        <rosparam command="load" file="$(find robot_pkg)/control/twist_mux.yaml" />
+        <rosparam command="load" file="$(find control)/param/twist_mux.yaml" />
         <remap from="cmd_vel_out" to="cmd_vel" />
     </node>
     

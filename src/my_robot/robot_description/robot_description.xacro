@@ -42,13 +42,20 @@
     <xacro:property name="imu_frame_orientation"            value="0 0 0"/>
 
     <!-- Import Rviz colors -->
-    <xacro:include filename="$(find robot_pkg)/models/materials.xacro"/>
+    <xacro:include filename="$(find my_robot)/robot_description/materials.xacro"/>
 
     <!-- Import Gazebo customization elemets -->
-    <xacro:include filename="$(find robot_pkg)/models/robot_description.gazebo"/>
+    <xacro:include filename="$(find my_robot)/robot_description/robot_description.gazebo"/>
 
     <!-- Import laser sensor -->
-    <xacro:include filename="$(find robot_pkg)/models/sensors/hokuyo.urdf.xacro"/>
+    <xacro:include filename="$(find my_robot)/sensors/hokuyo.urdf.xacro"/>
+
+    <!-- Extra link (non-inertial) -->
+    <link name="base_footprint" />
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_footprint" />
+        <child link="base_link" />
+    </joint>
 
     <!-- Chassis Link -->
     <link name="base_link">

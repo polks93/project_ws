@@ -41,6 +41,6 @@
         <arg name="ns"      value="robot_1" />
     </include>
     
-    <node type="rviz" name="rviz" pkg="rviz" output="screen"/>
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find simulation)/rviz_config/one_robot_navigation.rviz"/>
 
 </launch>

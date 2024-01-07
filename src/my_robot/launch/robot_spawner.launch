@@ -2,6 +2,8 @@
     <arg name="ns"              default="robot_0" />
     <arg name="init_pose"       default="-x 0 -y 0 -Y 0" />
     <arg name="twist_marker"    default="true" />
+    <arg name="amcl"            default="true" />
+    <arg name="move_base"       default="true" />
 
     <!-- Launch robot controller -->
     <include file="$(find control)/launch/control.launch" >
@@ -18,6 +20,20 @@
         <param name="robot_description"     value="/$(arg ns)/robot_description" />
     </node>
 
+    <!-- AMCL node -->
+    <group if="$(arg amcl)">
+        <include file="$(find localization)/launch/amcl.launch" >
+        <arg name="ns"  value="$(arg ns)" />
+        </include>
+    </group>
+
+    <!-- Move base node -->
+    <!-- <group if="$(arg move_base)" >
+        <include file="$(find srd_pkg)/jackal/jackal_navigation/launch/move_base.launch" >
+            <arg name="ns" value="$(arg ns)" />
+        </include>
+    </group> -->
+    
     <!-- Spawn Robot in Gazebo -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" ns="$(arg ns)"
           args="-urdf -model $(arg ns) -param /$(arg ns)/robot_description $(arg init_pose)" />

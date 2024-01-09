@@ -9,11 +9,11 @@
 
     <!-- Robot 1 parameters -->
     <arg name="ns_1"              default="robot_1" />
-    <arg name="init_pose_1"       default="-x 0 -y 0 -z 0" />
+    <arg name="init_pose_1"       default="-x -15.2 -y 5.5 -z 0 -Y 1.57 " />
     
     <!-- Robot 2 parameters -->
     <arg name="ns_2"              default="robot_2" />
-    <arg name="init_pose_2"       default="-x 2 -y 0 -z 0" />   
+    <arg name="init_pose_2"       default="-x -15.2 -y 7.5 -z 0 -Y 1.57" />   
 
     <!-- Map file -->
     <arg name="load_map"        default="true" />
@@ -41,7 +41,7 @@
         <arg name="init_pose"       value="$(arg init_pose_1)" />
     </include>
 
-    <!-- Launch Robot 2-->
+    <!-- Launch Robot 2 -->
     <!-- <include file="$(find my_robot)/launch/robot_spawner.launch" >
         <arg name="ns"              value="$(arg ns_2)" />
         <arg name="init_pose"       value="$(arg init_pose_2)" />

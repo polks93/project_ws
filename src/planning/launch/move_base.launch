@@ -7,25 +7,17 @@
         
         <rosparam file="$(find planning)/param/global_costmap_params.yaml" command="load" />
         <rosparam file="$(find planning)/param/local_costmap_params.yaml"  command="load" />
-        
+
+        <!-- Loading local and global planner parameters -->
         <rosparam file="$(find planning)/param/base_local_planner_params.yaml"             command="load" />
+        <rosparam file="$(find planning)/param/base_global_planner_params.yaml"            command="load" />
+
         <rosparam file="$(find planning)/param/move_base_params.yaml"                      command="load" />
-        
-        <!-- Global and local planners -->
-        <param name="base_global_planner"       type="string"   value="navfn/NavfnROS" />
-        <param name="base_local_planner"                        value="base_local_planner/TrajectoryPlannerROS"/>
         
         <!-- Correcting default value of frames -->
         <param name="global_costmap/robot_base_frame"                   value="$(arg ns)/base_link" />
         <param name="local_costmap/global_frame"                        value="$(arg ns)/odom" />
         <param name="local_costmap/robot_base_frame"                    value="$(arg ns)/base_link" />
-
-        <!-- Parametri non più necessari -->
-        <!-- <param name="global_costmap/global_frame"                       value="map" />
-        <param name="global_costmap/scan/sensor_frame"                  value="$(arg ns)/front/scan" />
-        <param name="global_costmap/obstacle_layer/scan/sensor_frame"   value="$(arg ns)/front/scan" />     
-        <param name="local_costmap/scan/sensor_frame"                   value="$(arg ns)/front/scan" />
-        <param name="local_costmap/obstacle_layer/scan/sensor_frame"    value="$(arg ns)/front/scan" /> -->
 
         <!-- Global costmap e AMCL usano il laser principale montato in alto -->
         <rosparam param="global_costmap/obstacles_layer/scan"   subst_value="true">

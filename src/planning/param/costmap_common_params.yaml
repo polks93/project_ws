@@ -4,7 +4,7 @@ raytrace_range: 3.0
 transform_tolerance: 0.5
 meter_scoring: true
 
-footprint: [[0.175, 0.13], [-0.175, 0.13], [-0.175, -0.13], [0.175, -0.13]]
+footprint: [[0.075, 0.07], [-0.075, 0.07], [-0.075, -0.07], [0.075, -0.07]]
 
 plugins:
 - {name: obstacles_layer, type: "costmap_2d::ObstacleLayer"}
@@ -16,4 +16,4 @@ obstacles_layer:
 
 inflation_layer:
  inflation_radius: 0.1
- cost_scaling_factor: 8.0
+ cost_scaling_factor: 20.0

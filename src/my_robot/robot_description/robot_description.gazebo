@@ -93,15 +93,15 @@
 
     <!-- Right wheel link -->
     <gazebo reference="right_wheel">
-        <mu1>0.5</mu1>
-        <mu2>0.5</mu2>
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
         <material>Gazebo/Black</material>
     </gazebo>
 
     <!-- Left wheel link -->
     <gazebo reference="left_wheel">
-        <mu1>0.5</mu1>
-        <mu2>0.5</mu2>
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
         <material>Gazebo/Black</material>
     </gazebo>
 

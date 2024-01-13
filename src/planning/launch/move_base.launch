@@ -2,14 +2,14 @@
     <arg name="ns"      default="robot_0" />
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" ns="$(arg ns)" output="screen">
-        <rosparam file="$(find localization)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
-        <rosparam file="$(find localization)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find planning)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find planning)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
         
-        <rosparam file="$(find localization)/param/global_costmap_params.yaml" command="load" />
-        <rosparam file="$(find localization)/param/local_costmap_params.yaml"  command="load" />
+        <rosparam file="$(find planning)/param/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find planning)/param/local_costmap_params.yaml"  command="load" />
         
-        <rosparam file="$(find localization)/param/base_local_planner_params.yaml"             command="load" />
-        <rosparam file="$(find localization)/param/move_base_params.yaml"                      command="load" />
+        <rosparam file="$(find planning)/param/base_local_planner_params.yaml"             command="load" />
+        <rosparam file="$(find planning)/param/move_base_params.yaml"                      command="load" />
         
         <!-- Global and local planners -->
         <param name="base_global_planner"       type="string"   value="navfn/NavfnROS" />
@@ -56,7 +56,7 @@
         <!-- Remapping of topics -->
         <remap from="map"       to="/map" />
         <!-- <remap from="odom"      to="odometry/local_filtered" /> -->
-        <remap from="cmd_vel"   to="move_base/cmd_vel"/>
+        <!-- <remap from="cmd_vel"   to="move_base/cmd_vel"/> -->
     </node>
 
 </launch>

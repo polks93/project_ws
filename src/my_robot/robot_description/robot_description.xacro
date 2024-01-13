@@ -9,23 +9,25 @@
     <xacro:property name="dummy_inertia"                value="1e-09"/>   
 
     <!-- Classic parameters -->
-    <xacro:property name="body_mass"    value="10"/>
-    <xacro:property name="body_lenght"  value="0.7"/>
-    <xacro:property name="body_width"   value="0.4"/>
-    <xacro:property name="body_height"  value="0.3"/>
-
-    <!-- Front wheel parameters -->
-    <xacro:property name="front_wheel_mass"     value="0.001"/>
-    <xacro:property name="front_wheel_radius"   value="0.05"/>
-
-    <!-- Rear wheel parameters -->
-    <xacro:property name="rear_wheel_mass"      value="0.001"/>
-    <xacro:property name="rear_wheel_radius"    value="0.05"/>
+    <xacro:property name="body_mass"    value="5"/>
+    <xacro:property name="body_lenght"  value="0.35"/>
+    <xacro:property name="body_width"   value="0.2"/>
+    <xacro:property name="body_height"  value="0.1"/>
 
     <!-- Control wheels parameters -->
     <xacro:property name="control_wheel_mass"   value="2"/>
-    <xacro:property name="control_wheel_radius" value="0.1"/>
-    <xacro:property name="control_wheel_lenght" value="0.1"/>
+    <xacro:property name="control_wheel_radius" value="0.05"/>
+    <xacro:property name="control_wheel_lenght" value="0.03"/>
+    
+    <!-- Front wheel parameters -->
+    <xacro:property name="front_wheel_mass"     value="0.001"/>
+    <xacro:property name="front_wheel_radius"   value="0.025"/>
+
+    <!-- Rear wheel parameters -->
+    <xacro:property name="rear_wheel_mass"      value="0.001"/>
+    <xacro:property name="rear_wheel_radius"    value="0.025"/>
+
+
 
     <!-- Frame position and orientation -->
     <xacro:property name="right_wheel_frame_position"       value="0 ${-body_width/2 - control_wheel_lenght/2} 0"/>

@@ -63,14 +63,13 @@
     <gazebo>
         <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
             <robotNamespace>/$(arg namespace)</robotNamespace>
-            <alwaysOn>true</alwaysOn>
             <legacyMode>false</legacyMode>
             <updateRate>50</updateRate>
             <leftJoint>left_wheel_joint</leftJoint>
             <rightJoint>right_wheel_joint</rightJoint>
             <wheelSeparation>${body_width + control_wheel_lenght}</wheelSeparation>
             <wheelDiameter>${2 * control_wheel_radius}</wheelDiameter>
-            <wheelTorque>10</wheelTorque>
+            <wheelTorque>500</wheelTorque>
             <commandTopic>cmd_vel</commandTopic>
             <odometryTopic>odom</odometryTopic>
             <odometryFrame>$(arg namespace)/odom</odometryFrame>
@@ -80,8 +79,7 @@
             <publishWheelJointState>true</publishWheelJointState>
             <wheelAcceleration>0</wheelAcceleration>
             <odometrySource>world</odometrySource>
-            <wheelAcceleration>1</wheelAcceleration>
-            <publishTf>1</publishTf>
+            <publishTf>true</publishTf>
             <rosDebugLevel>na</rosDebugLevel>
         </plugin>
     </gazebo>
@@ -93,15 +91,15 @@
 
     <!-- Right wheel link -->
     <gazebo reference="right_wheel">
-        <mu1>0.5</mu1>
-        <mu2>0.5</mu2>
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
         <material>Gazebo/Black</material>
     </gazebo>
 
     <!-- Left wheel link -->
     <gazebo reference="left_wheel">
-        <mu1>0.5</mu1>
-        <mu2>0.5</mu2>
+        <mu1>0.2</mu1>
+        <mu2>0.2</mu2>
         <material>Gazebo/Black</material>
     </gazebo>
 

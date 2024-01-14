@@ -1,6 +1,6 @@
 <launch>
     <arg name="ns"              default="robot_0" />
-    <arg name="twist_marker"    default="true" />
+    <arg name="twist_marker"    default="false" />
     
     <!-- Multiplex to handle different cmd_vel input -->
     <node pkg="twist_mux" type="twist_mux" name="twist_mux" ns="$(arg ns)" >

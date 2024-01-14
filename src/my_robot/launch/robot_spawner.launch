@@ -29,7 +29,7 @@
 
     <!-- Move base node -->
     <group if="$(arg move_base)" >
-        <include file="$(find localization)/launch/move_base.launch" >
+        <include file="$(find planning)/launch/move_base.launch" >
             <arg name="ns" value="$(arg ns)" />
         </include>
     </group>

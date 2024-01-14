@@ -15,5 +15,6 @@ obstacles_layer:
   scan: {sensor_frame: hokuyo_laser_link, data_type: LaserScan, topic: laser_scan, marking: true, clearing: true}
 
 inflation_layer:
- inflation_radius: 0.1
- cost_scaling_factor: 20.0
+  enabled: true
+  inflation_radius: 0.1
+  cost_scaling_factor: 20.0

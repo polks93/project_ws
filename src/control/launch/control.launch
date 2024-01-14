@@ -14,5 +14,9 @@
             <param name="link_name" value="$(arg ns)/base_link" />
         </node> 
     </group>
+    
+    <include file="$(find localization)/launch/ekf_localization.launch" >
+        <arg name="ns"  value="$(arg ns)" />
+    </include>
 
 </launch>

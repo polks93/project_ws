@@ -43,7 +43,7 @@
         
         <!-- Remapping of topics -->
         <remap from="map"       to="/map" />
-        <!-- <remap from="odom"      to="odometry/local_filtered" /> -->
+        <remap from="odom"      to="odometry/filtered" />
         <remap from="cmd_vel"   to="move_base/cmd_vel"/>
     </node>
 

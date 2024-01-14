@@ -4,16 +4,14 @@ TebLocalPlannerROS:
       
   # Trajectory
   teb_autosize:                       True
-  dt_ref:                             0.3
+  dt_ref:                             0.5
   dt_hysteresis:                      0.1
   max_samples:                        500
   min_sample:                         2
   global_plan_overwrite_orientation:  False
   allow_init_with_backwards_motion:   False
-  max_global_plan_lookahead_dist:     3.0
+  max_global_plan_lookahead_dist:     2.0
   global_plan_viapoint_sep:           -1
-  # weight_viapoint:                    10
-  # global_plan_prune_distance: 1
   force_reinit_new_goal_dist:         1.0
   exact_arc_length:                   False
   feasibility_check_no_poses:         4 
@@ -21,9 +19,9 @@ TebLocalPlannerROS:
     
   # Robot    
   max_vel_x:            0.6
-  max_vel_x_backwards:  0.4
+  max_vel_x_backwards:  0.6
   max_vel_y:            0.0
-  max_vel_theta:        0.6
+  max_vel_theta:        2.0
   acc_lim_x:            0.5
   acc_lim_theta:        0.5
   acc_lim_y:            0.0
@@ -31,37 +29,34 @@ TebLocalPlannerROS:
 
   footprint_model:
     type:     "point"
-    # radius:   0.08
 
   # GoalTolerance    
   xy_goal_tolerance:      0.2
   yaw_goal_tolerance:     0.1
   free_goal_vel:          False # True: puo arrivare al goal senza fermarsi
-  
-  #  complete_global_plan:   True
-      
+        
   # Obstacles
-  min_obstacle_dist:                      0.20
+  min_obstacle_dist:                      0.30
   include_costmap_obstacles:              True 
-  costmap_obstacles_behind_robot_dist:    1.0
-  obstacle_poses_affected:                30
-  inflation_dist:                         0.25
+  costmap_obstacles_behind_robot_dist:    0.5
+  obstacle_poses_affected:                20
+  inflation_dist:                         0.40
   include_dynamic_obstacles:              False
   costmap_converter_plugin:               ""
   costmap_converter_spin_thread:          True
   costmap_converter_rate:                 5.0
 
   # Optimization
-  no_inner_iterations: 5
-  no_outer_iterations: 4
+  no_inner_iterations: 4
+  no_outer_iterations: 3
   optimization_activate: True
   optimization_verbose: False
   penalty_epsilon: 0.1
   obstacle_cost_exponent: 4
   weight_max_vel_x: 2
   weight_max_vel_theta: 1
-  weight_acc_lim_x: 1
-  weight_acc_lim_theta: 1
+  weight_acc_lim_x: 0.0
+  weight_acc_lim_theta: 0.0
   weight_kinematics_nh: 1000
   weight_kinematics_forward_drive:  1000
   weight_kinematics_turning_radius: 1000
@@ -75,10 +70,9 @@ TebLocalPlannerROS:
   weight_adapt_factor: 2
 
   # Homotopy Class Planner
-
-  enable_homotopy_class_planning: True
+  enable_homotopy_class_planning: False
   enable_multithreading: True
-  max_number_classes: 4
+  max_number_classes: 2
   selection_cost_hysteresis: 1.0
   selection_prefer_initial_plan: 0.9
   selection_obst_cost_scale: 100.0
@@ -98,7 +92,6 @@ TebLocalPlannerROS:
   visualize_with_time_as_z_axis_scale: False
 
   # Recovery
-  
   shrink_horizon_backup: True
   shrink_horizon_min_duration: 10
   oscillation_recovery: True

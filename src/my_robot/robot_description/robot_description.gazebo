@@ -75,7 +75,7 @@
             <odometryFrame>$(arg namespace)/odom</odometryFrame>
             <robotBaseFrame>$(arg namespace)/base_link</robotBaseFrame>
             <publishWheelTF>false</publishWheelTF>
-            <publishOdomTF>true</publishOdomTF>
+            <publishOdomTF>false</publishOdomTF>
             <publishWheelJointState>true</publishWheelJointState>
             <wheelAcceleration>0</wheelAcceleration>
             <odometrySource>world</odometrySource>
@@ -91,15 +91,15 @@
 
     <!-- Right wheel link -->
     <gazebo reference="right_wheel">
-        <mu1>0.2</mu1>
-        <mu2>0.2</mu2>
+        <mu1>0.9</mu1>
+        <mu2>0.9</mu2>
         <material>Gazebo/Black</material>
     </gazebo>
 
     <!-- Left wheel link -->
     <gazebo reference="left_wheel">
-        <mu1>0.2</mu1>
-        <mu2>0.2</mu2>
+        <mu1>0.9</mu1>
+        <mu2>0.9</mu2>
         <material>Gazebo/Black</material>
     </gazebo>
 

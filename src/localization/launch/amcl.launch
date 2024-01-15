@@ -1,5 +1,9 @@
 <launch>
-
+  
+  <arg name="x"               default="0" />
+  <arg name="y"               default="0" />
+  <arg name="Y"               default="0" />
+  
   <arg name="use_map_topic"   default="true" />
   <arg name="ns"              default="robot_0" />
   <arg name="scan_topic"      default="laser_scan" />
@@ -22,10 +26,10 @@
     <param name="recovery_alpha_slow"       value="0.0"/>
     <!--Exponential decay rate for the fast average weight filter, used in deciding when to recover by adding random poses. A good value might be 0.1. -->
     <param name="recovery_alpha_fast"       value="0.1"/>
-    <!-- Initial pose mean -->
-    <param name="initial_pose_x"            value="0.0" />
-    <param name="initial_pose_y"            value="0.0" />
-    <param name="initial_pose_a"            value="0.0" />
+    <!-- Initial pose mean from launcher args -->
+    <param name="initial_pose_x"            value="$(arg x)" />
+    <param name="initial_pose_y"            value="$(arg y)" />
+    <param name="initial_pose_a"            value="$(arg Y)" />
     <!-- Rate at which scans are published for visualization -->
     <param name="gui_publish_rate"          value="10.0"/>
     <!-- Rate at which store the last estimated pose and cov -->
@@ -33,7 +37,7 @@
     <!-- if true, AMCL will subscribe to map topic -->
     <param name="use_map_topic"             value="$(arg use_map_topic)"/>
     <!--  When set to true, AMCL will only use the first map it subscribes to, rather than updating each time a new one is received. -->
-    <param name="first_map_only"            value="false"/>
+    <param name="first_map_only"            value="true"/>
     <!-- Enabling reduction of resampling rate when not needed -->
     <param name="selective_resampling"      value="true" />
 

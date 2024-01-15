@@ -9,21 +9,21 @@
 
     <!-- Robot 1 parameters -->
     <arg name="ns_1"              default="robot_1" />
-    <arg name="init_pose_1"       default="-x 3 -y 0 -z 0 -Y 0 " />
-    
+    <arg name="x_1"               default="1" />
+    <arg name="y_1"               default="1" />
+    <arg name="Y_1"               default="0" />
+
     <!-- Robot 2 parameters -->
     <arg name="ns_2"              default="robot_2" />
-    <arg name="init_pose_2"       default="-x 0 -y 0 -z 0 -Y 0" />   
+    <arg name="x_2"               default="1" />
+    <arg name="y_2"               default="0" />
+    <arg name="Y_2"               default="0" />
 
     <!-- Map file -->
-    <arg name="load_map"        default="true" />
     <arg name="map_file"        default="$(find navigation)/map/dund_miff_map.yaml" />
 
     <!-- Launch the map server -->
-    <group if="$(arg load_map)" >
-        <node pkg="map_server" type="map_server" name="map_server" output="screen" args="$(arg map_file)"/>
-    </group>
-
+    <node pkg="map_server" type="map_server" name="map_server" output="screen" args="$(arg map_file)"/>
 
     <!-- Launch Gazebo -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch" >
@@ -38,13 +38,18 @@
     <!-- Launch Robot 1-->
     <include file="$(find my_robot)/launch/robot_spawner.launch" >
         <arg name="ns"              value="$(arg ns_1)" />
-        <arg name="init_pose"       value="$(arg init_pose_1)" />
+        <arg name="x"               value="$(arg x_1)" />
+        <arg name="y"               value="$(arg y_1)" />
+        <arg name="Y"               value="$(arg Y_1)" />
+
     </include>
 
     <!-- Launch Robot 2-->
     <!-- <include file="$(find my_robot)/launch/robot_spawner.launch" >
         <arg name="ns"              value="$(arg ns_2)" />
-        <arg name="init_pose"       value="$(arg init_pose_2)" />
+        <arg name="x"               value="$(arg x_2)" />
+        <arg name="y"               value="$(arg y_2)" />
+        <arg name="Y"               value="$(arg Y_2)" />
     </include> -->
     
     <!-- <include file="$(find navigation)/launch/mapping.launch" >

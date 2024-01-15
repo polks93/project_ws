@@ -75,7 +75,7 @@
             <odometryFrame>$(arg namespace)/odom</odometryFrame>
             <robotBaseFrame>$(arg namespace)/base_link</robotBaseFrame>
             <publishWheelTF>false</publishWheelTF>
-            <publishOdomTF>false</publishOdomTF>
+            <publishOdomTF>true</publishOdomTF>
             <publishWheelJointState>true</publishWheelJointState>
             <wheelAcceleration>0</wheelAcceleration>
             <odometrySource>world</odometrySource>

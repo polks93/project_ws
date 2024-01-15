@@ -47,4 +47,9 @@
         <remap from="cmd_vel"   to="move_base/cmd_vel"/>
     </node>
 
+    <!-- move_base_sequence per mandare wayponit multipli -->
+    <!-- <node name="move_base_sequence" pkg="move_base_sequence" type="server.py" ns="$(arg ns)">
+       <param name="/move_base_sequence/is_repeating"           value="True"/>
+       <param name="/move_base_sequence/abortion_behaviour"     value="stop"/> 
+    </node> -->
 </launch>

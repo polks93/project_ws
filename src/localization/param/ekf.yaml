@@ -1,6 +1,6 @@
 frequency:              10
 two_d_mode:             true
-publish_tf:             true
+publish_tf:             false
 # transform_time_offset:  0.1
 
 odom_frame:       odom

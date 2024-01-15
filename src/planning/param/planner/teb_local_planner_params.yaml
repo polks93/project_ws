@@ -31,8 +31,8 @@ TebLocalPlannerROS:
     type:     "point"
 
   # GoalTolerance    
-  xy_goal_tolerance:      0.2
-  yaw_goal_tolerance:     0.1
+  xy_goal_tolerance:      0.3
+  yaw_goal_tolerance:     1.58  # pi/2 in questo modo possiamo arrivare al goal con qualsiasi orientamento
   free_goal_vel:          False # True: puo arrivare al goal senza fermarsi
         
   # Obstacles

@@ -1,0 +1,9 @@
+Per ora abbiamo il seguente set up:
+
+TF odom -> base_link fatta da Gazebo in modo "preciso"
+
+Per usare EKF per fornire la TF odom -> base_link modificare i seguenti file:
+
+robot_description.gazebo -> nel diff_drive_plugin mettere <publishOdomTf> a false
+ekf.yaml -> mettere publish_tf a true
+inoltre bisogna modificare il tool di Rviz della posa iniziale

@@ -1,11 +1,35 @@
 <launch>
     <rosparam   file="$(find my_package)/config/shared_info.yaml" command="load" />
 
-    <node name="waypoint_assignment" pkg="my_package" type="Waypoint_assignment_test.py" ns="robot_1">
-        <param name="x" value="1" />
+    <arg name="x_1"   default="0" />
+    <arg name="y_1"   default="0" />
+    <arg name="Y_1"   default="0" />
+
+    <arg name="x_2"   default="-3" />
+    <arg name="y_2"   default="4" />
+    <arg name="Y_2"   default="0" />    
+
+    <node name="waypoint_assignment" pkg="my_package" type="waypoint_assignment.py" ns="robot_1" >
+        <param name="x" value="$(arg x_1)" />
+        <param name="y" value="$(arg y_1)" />
+        <param name="Y" value="$(arg Y_1)" />
     </node>
 
-    <!-- <node name="waypoint_assignment" pkg="my_package" type="Waypoint_assignment.py" ns="robot_2">
+    <node name="waypoint_assignment" pkg="my_package" type="waypoint_assignment.py" ns="robot_2" >
+        <param name="x" value="$(arg x_2)" />
+        <param name="y" value="$(arg y_2)" />
+        <param name="Y" value="$(arg Y_2)" />
+    </node>
+
+    <!-- <node name="waypoint_assignment" pkg="my_package" type="Waypoint_assignment_test.py" ns="robot_1">
+        <param name="x" value="1" />
+    </node> -->
+
+    <!-- <node name="waypoint_assignment" pkg="my_package" type="Waypoint_assignment_test.py" ns="robot_2">
+        <param name="x" value="1" />
+    </node> -->
+    
+    <!-- <node name="waypoint_assignment" pkg="my_package" type="Waypoint_assignment_test.py" ns="robot_3">
         <param name="x" value="1" />
     </node> -->
 </launch>

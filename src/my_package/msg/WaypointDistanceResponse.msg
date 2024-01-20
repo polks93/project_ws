@@ -1,5 +1,3 @@
-Header header
-
 # Id del robot che sta inviando il messaggio
 int8 robot_id
 

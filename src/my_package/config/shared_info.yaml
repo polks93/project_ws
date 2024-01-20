@@ -1,5 +1,5 @@
 # Numero complessivo di agenti
-n_robot: 2
+n_robot: 3
 
 #  Lista di dizionari conteneni ID e coordinate degli waypoints
 waypoints:
@@ -15,3 +15,8 @@ waypoints:
 - id: 2
   x: 1
   y: 1
+
+waypoints_new:
+  '1': [-1,10]
+  '2': [3,2]
+  '3': [-4,5]

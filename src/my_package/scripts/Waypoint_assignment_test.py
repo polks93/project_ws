@@ -66,7 +66,7 @@ def listener():
 
     # Init subscirber topic all'interno del mio namespace
     my_response         = rospy.Subscriber("response",          WaypointDistanceResponse,   response_callback,          queue_size=10)
-    my_external_request = rospy.Subscriber("external_request",  WaypointDistanceRequest,    external_request_callback,  queue_size=10)
+    my_external_request = rospy.Subscriber("external_request",  String,    external_request_callback,  queue_size=10)
 
     # Init Publisher in tutti i topic del tipo /external_request e /response appartenenti agli altri ns
     for i in range(len(other_id)):
@@ -97,7 +97,7 @@ def listener():
                 external_request_pub[other_id[i]].publish(msg1)
                 external_request_pub[other_id[i]].publish(msg2)
                 
-                msg3.header.stamp = rospy.Time.now()
+                # msg3.header.stamp = rospy.Time.now()
                 response_pub[other_id[i]].publish(msg3)
             msg_recived = False
 

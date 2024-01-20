@@ -1,7 +1,7 @@
 <launch>
     <rosparam   file="$(find my_package)/config/shared_info.yaml" command="load" />
 
-    <node name="waypoint_assignment" pkg="my_package" type="Waypoint_assignment.py" ns="robot_1">
+    <node name="waypoint_assignment" pkg="my_package" type="Waypoint_assignment_test.py" ns="robot_1">
         <param name="x" value="1" />
     </node>
 

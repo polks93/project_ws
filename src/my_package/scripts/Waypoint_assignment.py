@@ -77,12 +77,13 @@ def listener():
         external_request_pub[other_id[i]]   = rospy.Publisher(prefix + "/external_request", String, queue_size=10)
         response_pub[other_id[i]]           = rospy.Publisher(prefix + "/response",         WaypointDistanceResponse, queue_size=10)
 
+    dist = distance_calculator([0,0], [waypoints[2]["x"], waypoints[2]["y"]])
+
     # Test corretta acquisizione parametri
     msg1 = "namespace: " + my_ns + " my_id: " + str(my_id) + " total robot: " + str(n_robot) + " other robots: " + str(other_id)
     msg2 = "waypoint id: " + str(waypoints[2]["id"]) + " dist: " + str(dist)
 
     # Test custom message
-    dist = distance_calculator([0,0], [waypoints[2]["x"], waypoints[2]["y"]])
     msg3 = WaypointDistanceResponse()
     msg3.robot_id       = my_id
     msg3.waypoint_id    = 2
@@ -95,6 +96,8 @@ def listener():
             for i in range(len(other_id)):
                 external_request_pub[other_id[i]].publish(msg1)
                 external_request_pub[other_id[i]].publish(msg2)
+                
+                msg3.header.stamp = rospy.Time.now()
                 response_pub[other_id[i]].publish(msg3)
             msg_recived = False
 

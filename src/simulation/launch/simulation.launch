@@ -9,14 +9,14 @@
 
     <!-- Robot 1 parameters -->
     <arg name="ns_1"              default="robot_1" />
-    <arg name="x_1"               default="1" />
-    <arg name="y_1"               default="1" />
+    <arg name="x_1"               default="-12" />
+    <arg name="y_1"               default="-2" />
     <arg name="Y_1"               default="0" />
 
     <!-- Robot 2 parameters -->
     <arg name="ns_2"              default="robot_2" />
-    <arg name="x_2"               default="1" />
-    <arg name="y_2"               default="0" />
+    <arg name="x_2"               default="-12" />
+    <arg name="y_2"               default="-3" />
     <arg name="Y_2"               default="0" />
 
     <!-- Map file -->

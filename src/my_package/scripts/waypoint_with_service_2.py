@@ -32,25 +32,32 @@ def handle_path_distance_request(request):
     global robot_position
     global my_candidate_assigned
     global my_candidate
+    
+    response = PathLengthResponse()
 
-    waypoint_id         = str(request.waypoint_id)
-    waypoint_position   = waypoints[waypoint_id]
-    response            = PathLengthResponse()
-    response.distance   = distance_calculator(robot_position, waypoint_position)
+    if request.waypoint_id == 0:
+        response.waiting = my_candidate_assigned
 
-    response.waiting    = my_candidate_assigned
-    if my_candidate is int(waypoint_id):
-        response.is_my_candidate = my_candidate_assigned
     else:
-        response.is_my_candidate = False
+        waypoint_id         = str(request.waypoint_id)
+        waypoint_position   = waypoints[waypoint_id]
+        response.distance   = distance_calculator(robot_position, waypoint_position)
+
+        if my_candidate is int(waypoint_id):
+            response.is_my_candidate = my_candidate_assigned
+        else:
+            response.is_my_candidate = False
 
     return response
 
-def callback2(msg):
-    x = 1
+def waypoint_assigned_callback(msg):
+    global waypoints
+    global my_id
+    del waypoints[str(msg.waypoint_id)]
+    rospy.loginfo("I'm %s and remaining wapyoints are " + str(list(waypoints)), my_id)
 
 def waypoint_assignment():
-
+    global my_id
     global enable
     global robot_position
     global waypoints
@@ -97,7 +104,7 @@ def waypoint_assignment():
         service_call[other_agents[i]] = rospy.ServiceProxy(service_name, PathLength)
 
         topic_name = prefix + "/waypoint_assigned"
-        other_waypoint_assigend[other_agents[i]] = rospy.Subscriber(topic_name, WaypointAssigned, callback2, queue_size=3)
+        other_waypoint_assigend[other_agents[i]] = rospy.Subscriber(topic_name, WaypointAssigned, waypoint_assigned_callback, queue_size=3)
 
     # Init messaggio da pubblicare
     result_msg  = WaypointAssigned()
@@ -118,7 +125,6 @@ def waypoint_assignment():
 
             if curr_state == 'CALCULATE DISTANCE':
 
-                
                 # Ciclo for che calcola la distanza da tutti gli waypoint
                 for i in range(len(waypoints)):
                     # list() fornisce una lista di tutte le chiavi presenti nel dizionario 'waypoint'
@@ -135,47 +141,56 @@ def waypoint_assignment():
                 agent_waiting = 0
 
             elif curr_state == 'DECISION MAKING':
+
                 # Id del waypoint con la distanza minore 
                 my_candidate   = int(waypoints_orderd[k][0])
                 my_distance    = waypoints_orderd[k][1]
+                rospy.loginfo("I m %s and my candidate is " + str(my_candidate), my_id)
 
                 for i in range(len(other_agents)):
 
-                    if k == n_robot - 1:
-                        rospy.loginfo("waiting....")
+                    already_assigned    = service_call[other_agents[i]](my_candidate).is_my_candidate
+                    other_distance      = service_call[other_agents[i]](my_candidate).distance
 
-                        next_state = 'WAITING'
+                    if k == (n_robot -1):
+                        my_candidate_assigned = True
                         break
-
-                    already_assigned = service_call[other_agents[i]](my_candidate).is_my_candidate
-
-                    if already_assigned is True:
-                        k += 1
+                    
+                    if other_distance < my_distance or (other_distance == my_distance and my_id > other_agents[i]):
+                        my_candidate_assigned = False
+                        break
+                    
+                    elif other_distance > my_distance and already_assigned == True:
+                        my_candidate_assigned = False
                         break
 
                     else:
-                        other_distance = service_call[other_agents[i]](my_candidate).distance
-                    
-                        if my_distance > other_distance or (my_distance == other_distance and my_id > other_agents[i]):
-                            k += 1
-                            break
+                        my_candidate_assigned = True
 
+                if my_candidate_assigned is True:
                     next_state = 'WAITING'
 
+                else:
+                    k = k + 1
+                    next_state = 'DECISION MAKING'
+                    
             elif curr_state == 'WAITING':
-                my_candidate_assigned = True
                 result_msg.waypoint_id = my_candidate
-
+                agent_waiting = 0
+                
                 for i in range(len(other_agents)):
-                    agent_waiting = agent_waiting + service_call[other_agents[i]](1).waiting
+                    agent_waiting = agent_waiting + service_call[other_agents[i]](0).waiting
 
                 if agent_waiting == (n_robot - 1):
-                    next_state = 'PUBLISHING'
+                    next_state = 'PUBLISHING'                    
 
             elif curr_state == 'PUBLISHING':
                 if curr_state != prev_state:
                     pub.publish(result_msg)
+                    del waypoints[str(my_candidate)]
+                    rospy.loginfo("I'm %s and remaining wapyoints are " + str(list(waypoints)), my_id)
 
+                    
             prev_state = curr_state
             curr_state = next_state
 

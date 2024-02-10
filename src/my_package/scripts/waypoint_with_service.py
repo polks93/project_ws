@@ -2,6 +2,7 @@
 
 import  rospy
 import  math
+import  copy
 from    std_msgs.msg        import String, Float64
 from    my_package.srv      import PathLength, PathLengthResponse
 from    my_package.msg      import WaypointAssigned
@@ -85,7 +86,7 @@ def waypoint_assignment():
     # ID del robot su cui si trova il nodo
     my_id   = int(my_ns[len(my_ns) - 2])
 
-    waypoints_avaible = waypoints
+    waypoints_avaible = copy.deepcopy(waypoints)
     my_waypoints = []
     other_agents = []
     service_call = {}               # Dizionario del tipo 'robot_id' -> service client che contatta quell'agente
@@ -164,7 +165,7 @@ def waypoint_assignment():
 
             elif curr_state == 'DECISION MAKING':
 
-                ready = False
+                # ready = False
                 go_next = False
                 my_candidate_assigned = False
                 other_distance_dic = {}
@@ -212,6 +213,8 @@ def waypoint_assignment():
 
                 else:
                     k = k + 1
+                    if k == len(waypoints_ordered):
+                        k = 0
                     next_state = 'DECISION MAKING'
 
                 other_distance_dic = {}
@@ -226,12 +229,7 @@ def waypoint_assignment():
                 if curr_state != prev_state:
                     pub.publish(result_msg)
                     my_waypoints.append(my_candidate)
-                    robot_position = waypoints_avaible[str(my_candidate)]
 
-                    del waypoints_avaible[str(my_candidate)]
-
-                    rospy.loginfo("i m %s and my new position is %s %s in waypoint %s", my_id, robot_position[0], robot_position[1], my_candidate)
-                    rospy.loginfo("I'm %s and remaining wapyoints are " + str(list(waypoints_avaible)), my_id)
                 
                 # Conta gli agenti nello stato PUBLISHING per sincronizzarsi
                 for i in range(len(other_agents)):
@@ -241,19 +239,22 @@ def waypoint_assignment():
             
             elif curr_state == "FINISH":
 
+                rospy.loginfo("Robot %s ready", my_id)
+                rospy.sleep(1)
+                robot_position = waypoints_avaible[str(my_candidate)]
+                del waypoints_avaible[str(my_candidate)]
+                ready = False
+
                 if len(waypoints_avaible) > 0:
-                    rospy.loginfo("Robot %s ready", my_id)
                     next_state = "CALCULATE DISTANCE"
-                    rospy.sleep(1)
-                    ready = False
+
+                    rospy.loginfo("i m %s and my new position is %s %s in waypoint %s", my_id, robot_position[0], robot_position[1], my_candidate)
+                    rospy.loginfo("I'm %s and remaining wapyoints are " + str(list(waypoints_avaible)), my_id)
+
                 else:
-                    if prev_state != curr_state:
-                        rospy.loginfo("Im %s, path finished, my waypoints are: " + str(my_waypoints), my_id)
-            
-            elif curr_state == "FINISH2":
-                if prev_state != curr_state:
-                    rospy.loginfo("Im %s in finished 2", my_id)
-                
+                    rospy.loginfo("Im %s, path finished, my waypoints are: " + str(my_waypoints), my_id)
+                    next_state = "HOMING"
+
 
             for i in range(len(other_agents)):
 
@@ -261,6 +262,12 @@ def waypoint_assignment():
                     callback_recived[other_agents[i]][0] = False
                     waypoint_to_remove = callback_recived[other_agents[i]][1]
                     del waypoints_avaible[waypoint_to_remove]
+
+                    if len(waypoints_avaible) == 0:
+                        next_state = "HOMING"
+                        ready = True
+                        rospy.loginfo("Im %s, path finished, my waypoints are: " + str(my_waypoints), my_id)
+
                     if next_state == 'DECISION MAKING':
                         rospy.loginfo('Im %s overwrite next_state', my_id)
                         next_state = 'CALCULATE DISTANCE'

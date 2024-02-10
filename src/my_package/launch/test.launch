@@ -13,6 +13,10 @@
     <arg name="y_3"   default="0" />
     <arg name="Y_3"   default="0" />
 
+    <arg name="x_4"   default="4" />
+    <arg name="y_4"   default="0" />
+    <arg name="Y_4"   default="0" />
+
     <node name="waypoint_assignment" pkg="my_package" type="waypoint_with_service.py" ns="robot_1" output="screen">
         <param name="x" value="$(arg x_1)" />
         <param name="y" value="$(arg y_1)" />
@@ -29,6 +33,12 @@
         <param name="x" value="$(arg x_3)" />
         <param name="y" value="$(arg y_3)" />
         <param name="Y" value="$(arg Y_3)" />
+    </node>
+
+    <node name="waypoint_assignment" pkg="my_package" type="waypoint_with_service.py" ns="robot_4" output="screen">
+        <param name="x" value="$(arg x_4)" />
+        <param name="y" value="$(arg y_4)" />
+        <param name="Y" value="$(arg Y_4)" />
     </node>
 
     <!-- <node name="waypoint_assignment" pkg="my_package" type="waypoint_assignment.py" ns="robot_1" >

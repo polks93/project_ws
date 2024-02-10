@@ -2,4 +2,4 @@ int8        waypoint_id
 ---
 float64     distance
 bool        is_my_candidate
-bool        waiting
+bool        ready

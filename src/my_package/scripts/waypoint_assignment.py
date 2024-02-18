@@ -3,7 +3,7 @@
 import  rospy
 import  math
 import  copy
-from    std_msgs.msg        import String, Float64
+from    std_msgs.msg        import String
 from    my_package.srv      import PathLength, PathLengthResponse
 from    my_package.msg      import WaypointAssigned
 
@@ -56,9 +56,10 @@ def handle_path_distance_request(request):
 def waypoint_assigned_callback(msg):
     global callback_recived
 
-    robot_id = msg.robot_id
-    waypoint_id = str(msg.waypoint_id)
-    callback_recived[robot_id] = [True, waypoint_id]
+    if msg.waypoint_id != 0:
+        robot_id = msg.robot_id
+        waypoint_id = str(msg.waypoint_id)
+        callback_recived[robot_id] = [True, waypoint_id]
 
 def waypoint_assignment():
     global my_id
@@ -248,6 +249,11 @@ def waypoint_assignment():
                 else:
                     rospy.loginfo("Im %s, path finished, my waypoints are: " + str(my_waypoints), my_id)
                     next_state = "HOMING"
+            
+            elif curr_state == 'HOMING':
+                if curr_state != prev_state:
+                    result_msg.waypoint_id = 0
+                    pub.publish(result_msg)
                     
 
             for i in range(len(other_agents)):

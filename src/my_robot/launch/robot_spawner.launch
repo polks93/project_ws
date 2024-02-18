@@ -33,6 +33,16 @@
         <arg name="ns" value="$(arg ns)" />
     </include>
     
+    <!-- Waypoint assignment node -->
+    <node name="waypoint_assignment" pkg="my_package" type="waypoint_assignment.py" ns="$(arg ns)">
+        <param name="x" value="$(arg x)" />
+        <param name="y" value="$(arg y)" />
+        <param name="Y" value="$(arg Y)" />
+    </node>
+
+    <!-- Goal handler node -->
+    <node name="goal_handler" pkg="my_package" type="goal_handler.py" ns="$(arg ns)" output="screen" />
+
     <!-- Spawn Robot in Gazebo -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" ns="$(arg ns)"
           args="-urdf -model $(arg ns) -param /$(arg ns)/robot_description -x $(arg x) -y $(arg y) -Y $(arg Y)" />

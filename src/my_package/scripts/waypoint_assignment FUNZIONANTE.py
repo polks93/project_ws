@@ -4,8 +4,6 @@ import  rospy
 import  math
 import  copy
 from    std_msgs.msg        import String
-from    nav_msgs.srv        import GetPlan
-from    geometry_msgs.msg   import PoseStamped
 from    my_package.srv      import PathLength, PathLengthResponse
 from    my_package.msg      import WaypointAssigned
 
@@ -26,45 +24,6 @@ def distance_calculator(P1, P2):
 
     distance = math.pow(math.pow(x1 - x2, 2) + math.pow(y1 - y2, 2), 0.5)
     return distance
-
-# Funzione che usa il service make_plan per ottenere un path da punto A a punto B.
-# Ottenuto il path calcola la sua lunghezza
-def path_length(robot_position, waypoint):
-
-    global make_plan_client
-
-    cumulative_distance = 0
-
-    # Punto iniziale
-    start = PoseStamped()
-    start.header.frame_id = "map"
-    start.pose.position.x = robot_position[0]
-    start.pose.position.y = robot_position[1]
-    start.pose.orientation.w = 1.0
-
-    # Punto finale
-    goal = PoseStamped()
-    goal.header.frame_id = "map"
-    goal.pose.position.x = waypoint[0]
-    goal.pose.position.y = waypoint[1]
-    goal.pose.orientation.w = 1.0
-
-    # Tolleranza raggiungimento goal
-    tolerance = 0.1
-
-    response = make_plan_client(start, goal, tolerance)
-    path = response.plan.poses
-
-    P0 = robot_position
-
-    for k in range(0, len(path) - 1, 1):
-        x1 = path[k].pose.position.x
-        y1 = path[k].pose.position.y
-        P1 = [x1, y1]
-        cumulative_distance = cumulative_distance + distance_calculator(P0, P1)
-        P0 = P1
-
-    return cumulative_distance
 
 # Service server presente in ogni nodo:
 # Quando viene ricevuta una richiesta contenente l'id di un waypoint
@@ -89,7 +48,7 @@ def handle_path_distance_request(request):
 
         else:
             waypoint_position   = waypoints[waypoint_id]
-            response.distance   = path_length(robot_position, waypoint_position)
+            response.distance   = distance_calculator(robot_position, waypoint_position)
             response.is_my_candidate = False
 
     return response
@@ -103,7 +62,6 @@ def waypoint_assigned_callback(msg):
         callback_recived[robot_id] = [True, waypoint_id]
 
 def waypoint_assignment():
-    global make_plan_client
     global my_id
     global enable
     global robot_position
@@ -145,9 +103,6 @@ def waypoint_assignment():
     sub = rospy.Subscriber("/chat",             String,     callback,   queue_size=1)
     pub = rospy.Publisher("waypoint_assigned",  WaypointAssigned,       queue_size=3)
 
-    #  Client per service che genera il path da move_base
-    make_plan_client = rospy.ServiceProxy('move_base/make_plan', GetPlan)
-    
     # Init del service server
     my_server = rospy.Service("path_length", PathLength, handle_path_distance_request)
     
@@ -196,9 +151,8 @@ def waypoint_assignment():
                     id_waypoint = list(waypoints_avaible)[i]
 
                     # Dizionario: ID waypoint -> distanza dal waypoint
-                    # waypoints_distance[id_waypoint] = distance_calculator(robot_position, waypoints_avaible[id_waypoint])
-                    waypoints_distance[id_waypoint] = path_length(robot_position, waypoints_avaible[id_waypoint])
-                    
+                    waypoints_distance[id_waypoint] = distance_calculator(robot_position, waypoints_avaible[id_waypoint])
+                
                 # Lista ordinata del dizionario creato sopra del tipo [('id', distanza), ...]
                 waypoints_ordered = sorted(waypoints_distance.items(), key=lambda item:item[1])
 

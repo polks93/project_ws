@@ -2,7 +2,6 @@
 
 import  rospy
 import  actionlib
-from    std_msgs.msg        import String
 from    move_base_msgs.msg  import MoveBaseAction, MoveBaseGoal
 from    my_package.msg      import WaypointAssigned
 

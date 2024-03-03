@@ -4,6 +4,14 @@
     <arg name="y"               default="0" />
     <arg name="Y"               default="0" />
 
+    <!-- Parameters for map merge node -->
+    <group ns="$(arg ns)/map_merge">
+        <param name="init_pose_x"   value="$(arg x)"/>
+        <param name="init_pose_y"   value="$(arg y)"/>
+        <param name="init_pose_z"   value="0.0"/>
+        <param name="init_pose_yaw" value="$(arg Y)"/>
+    </group>
+
     <!-- Launch robot controller -->
     <include file="$(find control)/launch/control.launch" >
         <arg name="ns"              value="$(arg ns)" />
@@ -26,7 +34,6 @@
         <arg name="x"   value="$(arg x)" />
         <arg name="y"   value="$(arg y)" />
         <arg name="Y"   value="$(arg Y)" />
-
     </include>
 
     <!-- Move base node -->
@@ -42,7 +49,15 @@
     </node>
 
     <!-- Goal handler node -->
-    <node name="goal_handler" pkg="my_package" type="goal_handler.py" ns="$(arg ns)" output="screen" />
+    <node name="goal_handler" pkg="my_package" type="goal_handler.py" ns="$(arg ns)" output="screen" >
+        <param name="x" value="$(arg x)" />
+        <param name="y" value="$(arg y)" />
+    </node>
+
+    <!-- Gmapping node -->
+    <include file="$(find mapping)/launch/mapping.launch"  >
+        <arg name="ns"      value="$(arg ns)" />
+    </include>
 
     <!-- Spawn Robot in Gazebo -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" ns="$(arg ns)"

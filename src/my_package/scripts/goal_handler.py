@@ -23,8 +23,10 @@ def goal_handler():
     # Init del nodo
     rospy.init_node("goal_handler")
     rate = rospy.Rate(30)
-    
-    waypoints = rospy.get_param("/waypoints")
+
+    x_0         = rospy.get_param("~x", "0")
+    y_0         = rospy.get_param("~y", "0")
+    waypoints   = rospy.get_param("/waypoints")
 
     waypoints_sub = rospy.Subscriber("waypoint_assigned", WaypointAssigned, waypoint_callback, queue_size=1)
     client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
@@ -32,6 +34,8 @@ def goal_handler():
     goal.target_pose.header.frame_id = "map"
 
     enable = False
+    homing = False
+
     my_waypoints = []
     k = 0
 
@@ -58,10 +62,26 @@ def goal_handler():
 
             if k == len(my_waypoints):
                 enable = False
+                homing = True
 
-            rate.sleep()
-        else:
-            rate.sleep()
+        elif homing is True:
+            
+            coordinates = [x_0, y_0]
+            goal.target_pose.pose.position.x = coordinates[0]
+            goal.target_pose.pose.position.y = coordinates[1]
+            goal.target_pose.pose.orientation.w = 1
+        
+            client.send_goal(goal)
+
+            client.wait_for_result()
+            result = client.get_result()
+
+            if result:
+                rospy.loginfo("GOAL HANDLER: inital position reached")
+            else:
+                rospy.loginfo("moving to goal...") 
+
+        rate.sleep()
 
 
 if __name__ == '__main__':

@@ -61,6 +61,7 @@
     <param name="odom_alpha2"       value="0.005"/>
     <param name="odom_alpha3"       value="0.01"/>
     <param name="odom_alpha4"       value="0.005"/>
+    
     <!-- Frame definition -->
     <param name="odom_frame_id"     value="$(arg ns)/odom"/>
     <param name="base_frame_id"     value="$(arg ns)/base_link"/>

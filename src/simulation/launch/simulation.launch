@@ -23,7 +23,7 @@
     <arg name="Y_2"               default="0" />
 
     <!-- Map file -->
-    <arg name="map_file"        default="$(find navigation)/map/dund_miff_map.yaml" />
+    <arg name="map_file"        default="$(find mapping)/map/dund_miff_map.yaml" />
 
     <!-- Launch the map server -->
     <node pkg="map_server" type="map_server" name="map_server" output="screen" args="$(arg map_file)"/>
@@ -47,17 +47,16 @@
     </include>
 
     <!-- Launch Robot 2-->
-    <include file="$(find my_robot)/launch/robot_spawner.launch" >
+    <!-- <include file="$(find my_robot)/launch/robot_spawner.launch" >
         <arg name="ns"              value="$(arg ns_2)" />
         <arg name="x"               value="$(arg x_2)" />
         <arg name="y"               value="$(arg y_2)" />
         <arg name="Y"               value="$(arg Y_2)" />
-    </include>
-
-    <!-- <include file="$(find navigation)/launch/mapping.launch" >
-        <arg name="ns"      value="robot_1" />
     </include> -->
-    
+
+    <!-- Multirobot map merge node -->
+    <!-- <include file="$(find mapping)/launch/merge_maps.launch" /> -->
+
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find simulation)/rviz_config/two_robot_navigation.rviz"/>
 
 </launch>

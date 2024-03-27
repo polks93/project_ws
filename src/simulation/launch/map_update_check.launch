@@ -1,0 +1,45 @@
+<launch>
+
+    <!-- Gazebo parameters -->
+    <arg name="use_sim_time"    default="true" />
+    <arg name="gui"             default="true" />
+    <arg name="headless"        default="false" />
+    <arg name="debug"           default="false" />
+    <arg name="paused"          default="false" />
+    <arg name="world_name"      default="$(find simulation)/worlds/dund_miff.world" />
+
+    <!-- Robot parameters -->
+    <arg name="ns"              default="robot_1" />
+    <arg name="x"               default="-12" />
+    <arg name="y"               default="-2" />
+    <arg name="Y"               default="0" />
+
+    <node name="map_custom" pkg="my_package" type="marker_maker.py" />
+    <!-- Map file -->
+    <arg name="map_file"        default="$(find mapping)/map/dund_miff_map.yaml" />
+
+    <!-- Launch the map server -->
+    <node pkg="map_server" type="map_server" name="map_server" output="screen" args="$(arg map_file)"/>
+
+    <!-- Launch Gazebo -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" >
+        <arg name="debug"           value="$(arg debug)" />
+        <arg name="gui"             value="$(arg gui)" />
+        <arg name="use_sim_time"    value="$(arg use_sim_time)" />
+        <arg name="headless"        value="$(arg headless)" />
+        <arg name="world_name"      value="$(arg world_name)" />
+        <arg name="paused"          value="$(arg paused)" />
+    </include>
+
+    <!-- Launch Robot -->
+    <include file="$(find my_robot)/launch/robot_spawner_simple.launch" >
+        <arg name="ns"              value="$(arg ns)" />
+        <arg name="x"               value="$(arg x)" />
+        <arg name="y"               value="$(arg y)" />
+        <arg name="Y"               value="$(arg Y)" />
+    </include>
+
+    <!-- Launch rviz -->
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find simulation)/rviz_config/one_robot_map_update_check.rviz"/>
+
+</launch>   

@@ -1,0 +1,42 @@
+<launch>
+    <arg name="ns"              default="robot_0" />
+    <arg name="x"               default="0" />
+    <arg name="y"               default="0" />
+    <arg name="Y"               default="0" />
+
+
+    <!-- Launch robot controller -->
+    <include file="$(find control)/launch/control.launch" >
+        <arg name="ns"              value="$(arg ns)" />
+    </include>
+
+    <param name="/$(arg ns)/robot_description"
+        command="$(find xacro)/xacro 
+                $(find my_robot)/robot_description/robot_description.xacro
+                namespace:=$(arg ns)"/>
+    
+    <!-- Robot state publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" ns="$(arg ns)">
+        <param name="tf_prefix"             value="$(arg ns)" />
+        <param name="robot_description"     value="/$(arg ns)/robot_description" />
+    </node>
+
+    <!-- AMCL node -->
+    <include file="$(find localization)/launch/amcl.launch" >
+        <arg name="ns"  value="$(arg ns)" />
+        <arg name="x"   value="$(arg x)" />
+        <arg name="y"   value="$(arg y)" />
+        <arg name="Y"   value="$(arg Y)" />
+    </include>
+
+    <!-- Move base node -->
+    <include file="$(find planning)/launch/move_base.launch" >
+        <arg name="ns" value="$(arg ns)" />
+    </include>
+    
+
+    <!-- Spawn Robot in Gazebo -->
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" ns="$(arg ns)"
+          args="-urdf -model $(arg ns) -param /$(arg ns)/robot_description -x $(arg x) -y $(arg y) -Y $(arg Y)" />
+
+</launch>

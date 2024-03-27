@@ -1,0 +1,10 @@
+<launch>
+    <!-- Map file -->
+    <arg name="local_map" default="$(find mapping)/map/local.yaml" />
+    <arg name="global_map" default="$(find mapping)/map/global.yaml" />
+
+    <!-- Launch the map server -->
+    <node pkg="map_server" type="map_server" name="map_server" ns="local" output="screen" args="$(arg local_map)"/>
+    <node pkg="map_server" type="map_server" name="map_server" ns="global" output="screen" args="$(arg global_map)"/>
+
+</launch>

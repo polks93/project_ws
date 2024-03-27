@@ -7,7 +7,7 @@
     <arg name="gui"             default="true" />
     <arg name="headless"        default="false" />
     <arg name="debug"           default="false" />
-    <arg name="paused"          default="false" />
+    <arg name="paused"          default="true" />
     <arg name="world_name"      default="$(find simulation)/worlds/dund_miff.world" />
 
     <!-- Robot 1 parameters -->
@@ -47,15 +47,15 @@
     </include>
 
     <!-- Launch Robot 2-->
-    <!-- <include file="$(find my_robot)/launch/robot_spawner.launch" >
+    <include file="$(find my_robot)/launch/robot_spawner.launch" >
         <arg name="ns"              value="$(arg ns_2)" />
         <arg name="x"               value="$(arg x_2)" />
         <arg name="y"               value="$(arg y_2)" />
         <arg name="Y"               value="$(arg Y_2)" />
-    </include> -->
+    </include>
 
     <!-- Multirobot map merge node -->
-    <!-- <include file="$(find mapping)/launch/merge_maps.launch" /> -->
+    <include file="$(find mapping)/launch/merge_maps.launch" />
 
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find simulation)/rviz_config/two_robot_navigation.rviz"/>
 

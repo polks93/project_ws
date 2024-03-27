@@ -12,8 +12,14 @@ def amcl_callback(msg):
 
 def map_callback(msg):
     global my_map
-    my_map = msg
     
+    buffer = list(msg.data)
+    buffer[0] = 100
+    my_map = msg
+
+    my_map.data = tuple(buffer)
+    prova = buffer[0]
+    rospy.loginfo(str(prova))
 def marker_maker():
     global x, y
     global my_map

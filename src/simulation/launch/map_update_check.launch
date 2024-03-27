@@ -14,7 +14,8 @@
     <arg name="y"               default="-2" />
     <arg name="Y"               default="0" />
 
-    <node name="map_custom" pkg="my_package" type="marker_maker.py" />
+    <!-- <node name="map_custom" pkg="my_package" type="marker_maker.py" output="screen"/> -->
+
     <!-- Map file -->
     <arg name="map_file"        default="$(find mapping)/map/dund_miff_map.yaml" />
 

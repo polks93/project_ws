@@ -1,29 +1,52 @@
 #! /usr/bin/env python3
 
 import  rospy
+import  math
 from    visualization_msgs.msg  import Marker
 from    geometry_msgs.msg       import PoseWithCovarianceStamped
 from    nav_msgs.msg            import OccupancyGrid
+from    sensor_msgs.msg         import LaserScan
 
 def amcl_callback(msg):
-    global x, y
+
+    global x, y, theta
     x = msg.pose.pose.position.x
     y = msg.pose.pose.position.y
 
+
+    z = msg.pose.pose.orientation.z
+    q0 = msg.pose.pose.orientation.w
+    q0 = math.copysign(q0, z)
+    theta = 2*math.acos(q0)
+
 def map_callback(msg):
+
     global my_map
-    
-    buffer = list(msg.data)
-    buffer[0] = 100
+    global map_recived
+
+    map_recived = True
     my_map = msg
 
-    my_map.data = tuple(buffer)
-    prova = buffer[0]
-    rospy.loginfo(str(prova))
+    # buffer = list(msg.data)
+    # buffer[0] = 100
+    # my_map.data = tuple(buffer)
+    # prova = buffer[0]
+    # rospy.loginfo(str(prova))
+
+def laser_callback(msg):
+
+    global laser_recived
+    global laser_scan
+
+    laser_recived = True
+    laser_scan = msg
+
 def marker_maker():
-    global x, y
+    global x, y, theta
     global my_map
-    global map_pub
+    global map_recived
+    global laser_recived
+    global laser_scan
 
     rospy.init_node('rviz_marker')
     rate = rospy.Rate(30)
@@ -32,7 +55,7 @@ def marker_maker():
     map_pub =    rospy.Publisher("/custom_map", OccupancyGrid, queue_size=1)
     amcl_sub = rospy.Subscriber("/robot_1/amcl_pose", PoseWithCovarianceStamped, amcl_callback, queue_size=1)
     map_sub  = rospy.Subscriber("/map", OccupancyGrid, map_callback, queue_size=1)
-    
+    laser_sub = rospy.Subscriber("/robot_1/laser_scan", LaserScan, laser_callback, queue_size=1)
     
     marker = Marker()
 
@@ -43,8 +66,8 @@ def marker_maker():
     marker.id = 0
 
     # Set the scale of the marker
-    marker.scale.x = 0.5
-    marker.scale.y = 0.5
+    marker.scale.x = 0.1
+    marker.scale.y = 0.1
     marker.scale.z = 0.001
 
     # Set the color
@@ -62,10 +85,13 @@ def marker_maker():
     marker.pose.orientation.z = 0.0
     marker.pose.orientation.w = 1.0
 
+    k = 0
     x = 0
     y = 0
-
-
+    theta = 0
+    theta_0 = - 3.14159
+    laser_recived = False
+    map_recived = False
     my_map = OccupancyGrid()
     # my_map.header.frame_id = "custom_map"
     # my_map.info.resolution = 0.05
@@ -82,8 +108,29 @@ def marker_maker():
 
 
     while not rospy.is_shutdown():
-        marker.pose.position.x = x
-        marker.pose.position.y = y
+
+
+        if map_recived:
+            cell_x = round((x - my_map.info.origin.position.x)/my_map.info.resolution)
+            cell_y = round((y - my_map.info.origin.position.y)/my_map.info.resolution)
+
+            index = cell_x + cell_y*my_map.info.width
+
+            buffer = list(my_map.data)
+            buffer[index] = 100
+            my_map.data = tuple(buffer)
+
+        if laser_recived:
+            laser_recived = False
+            x_beam = []
+            y_beam = []
+            for i in range(len(laser_scan.ranges)):
+
+                x_beam.append(x + laser_scan.ranges[i]*math.cos(theta_0 + i*math.pi/180 + theta))
+                y_beam.append(y + laser_scan.ranges[i]*math.sin(theta_0 + i*math.pi/180 + theta))
+
+            marker.pose.position.x = x_beam[180]
+            marker.pose.position.y = y_beam[180]
 
         marker_pub.publish(marker)
         map_pub.publish(my_map)

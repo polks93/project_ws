@@ -19,7 +19,7 @@
     <param name="update_min_d"              value="0.1"/>
     <param name="update_min_a"              value="0.314"/>
     <!-- Number of filter updates required before resampling. -->
-    <param name="resample_interval"         value="1"/>
+    <param name="resample_interval"         value="0.5"/>
     <!-- Time to post-date the transform -->
     <param name="transform_tolerance"       value="0.5"/>
     <!-- Exponential decay rate for the slow average weight filter, used in deciding when to recover by adding random poses. A good value might be 0.001. -->
@@ -43,8 +43,8 @@
 
                     <!-- LASER MODEL PARAMETERS -->
     <param name="laser_min_range"           value="0.1"/>
-    <param name="laser_max_range"           value="30.0"/>
-    <param name="laser_max_beams"           value="720"/>
+    <param name="laser_max_range"           value="10.0"/>
+    <param name="laser_max_beams"           value="360"/>
     <param name="laser_z_hit"               value="0.5"/>
     <param name="laser_z_short"             value="0.05"/>
     <param name="laser_z_max"               value="0.05"/>
@@ -57,10 +57,10 @@
 
                     <!-- ODOMETRY MODEL PARAMETERS -->
     <param name="odom_model_type"   value="diff-corrected"/>
-    <param name="odom_alpha1"       value="0.005"/>         
-    <param name="odom_alpha2"       value="0.005"/>
-    <param name="odom_alpha3"       value="0.01"/>
-    <param name="odom_alpha4"       value="0.005"/>
+    <param name="odom_alpha1"       value="0.0005"/>         
+    <param name="odom_alpha2"       value="0.0005"/>
+    <param name="odom_alpha3"       value="0.0005"/>
+    <param name="odom_alpha4"       value="0.0005"/>
     
     <!-- Frame definition -->
     <param name="odom_frame_id"     value="$(arg ns)/odom"/>

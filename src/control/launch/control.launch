@@ -15,8 +15,8 @@
         </node> 
     </group>
     
-    <include file="$(find localization)/launch/ekf_localization.launch" >
+    <!-- <include file="$(find localization)/launch/ekf_localization.launch" >
         <arg name="ns"  value="$(arg ns)" />
-    </include>
+    </include> -->
 
 </launch>

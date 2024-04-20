@@ -20,11 +20,11 @@
 
 <!-- Map updater -->
 
-<node pkg="map_change_detection" type="map_change_detection_processer_node" name="updated_map_processer" output="screen" ns="$(arg ns)">
+<!-- <node pkg="map_change_detection" type="map_change_detection_processer_node" name="updated_map_processer" output="screen" ns="$(arg ns)">
     <param name="map_topic"             value="/map" />
     <param name="processed_map_topic"   value="/$(arg ns)/processed_map" />
     <param name="changed_cells_topic"   value="/$(arg ns)/map_updater/changed_cells" />
-</node>
+</node> -->
 
 
 </launch>

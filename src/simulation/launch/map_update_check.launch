@@ -54,6 +54,19 @@
         <arg name="Y"               value="$(arg Y_2)" />
     </include>
 
+    <!-- Changed cells union node -->
+    <node pkg="map_change_detection" type="changed_cells_union.py" name="changed_cells_union" >
+        <param name="n_robot"   value="2" />
+    </node>
+
+    <!-- Update map node -->
+    <node pkg="map_change_detection" type="map_change_detection_processer_node" name="updated_map_processer" output="screen">
+        <param name="map_topic"             value="/map" />
+        <param name="processed_map_topic"   value="/processed_map" />
+        <param name="changed_cells_topic"   value="/total_changed_cells" />
+    </node>
+
+
     <!-- Launch rviz -->
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find simulation)/rviz_config/one_robot_map_update_check.rviz"/>
 

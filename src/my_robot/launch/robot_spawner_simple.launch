@@ -6,9 +6,9 @@
 
 
     <!-- Launch robot controller -->
-    <include file="$(find control)/launch/control.launch" >
+    <!-- <include file="$(find control)/launch/control.launch" >
         <arg name="ns"              value="$(arg ns)" />
-    </include>
+    </include> -->
 
     <param name="/$(arg ns)/robot_description"
         command="$(find xacro)/xacro 
@@ -38,5 +38,10 @@
     <!-- Spawn Robot in Gazebo -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" ns="$(arg ns)"
           args="-urdf -model $(arg ns) -param /$(arg ns)/robot_description -x $(arg x) -y $(arg y) -Y $(arg Y)" />
+
+    <!-- Map change detection -->
+    <include file="$(find map_change_detection)/launch/start_map_update.launch" > 
+        <arg name="ns" value="$(arg ns)" />
+    </include>
 
 </launch>

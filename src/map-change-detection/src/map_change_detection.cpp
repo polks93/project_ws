@@ -17,9 +17,8 @@ MapChangeDetection::MapChangeDetection(ros::NodeHandle* nodehandle) :	nh_(*nodeh
 	double		min_linear_dist, search_width_ang, v_range_tol, w_idle_dist, range1, range2, pair_dist1, pair_dist2, radius1, radius2;
 
 	ROS_INFO("Calling node constructor...");
-
 	// Retrieve parameters
-	nh_.getParam("/map_topic", map_topic);
+	nh_.getParam("map_topic", map_topic);
 	nh_.getParam("odom_topic", odom_topic);
 	nh_.getParam("map_frame", map_frame);
 
@@ -138,7 +137,7 @@ bool MapChangeDetection::serviceCallback(map_change_detection::UpdateMap::Reques
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void MapChangeDetection::initializeRvizStuff(const std::string& fixed_frame) {
-	pub_marker = nh_.advertise<visualization_msgs::Marker>("/marker", 10, true);
+	pub_marker = nh_.advertise<visualization_msgs::Marker>("marker", 10, true);
 
 	if(debug_visualization) {
 		m_marker.header.frame_id = fixed_frame;

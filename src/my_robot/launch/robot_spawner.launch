@@ -13,9 +13,9 @@
     </group>
 
     <!-- Launch robot controller -->
-    <include file="$(find control)/launch/control.launch" >
+    <!-- <include file="$(find control)/launch/control.launch" >
         <arg name="ns"              value="$(arg ns)" />
-    </include>
+    </include> -->
 
     <param name="/$(arg ns)/robot_description"
         command="$(find xacro)/xacro 

@@ -10,6 +10,8 @@
 
         <!-- Loading local and global planner parameters -->
         <rosparam file="$(find planning)/param/planner/teb_local_planner_params.yaml"               command="load" />
+        <!-- <rosparam file="$(find planning)/param_old/dwa_local_planner_params.yaml"               command="load" /> -->
+
         <rosparam file="$(find planning)/param/planner/base_global_planner_params.yaml"             command="load" />
 
         <rosparam file="$(find planning)/param/move_base_params.yaml"                      command="load" />
@@ -44,7 +46,7 @@
         <!-- Remapping of topics -->
         <remap from="map"       to="/map" />
         <!-- <remap from="odom"      to="odometry/filtered" /> -->
-        <remap from="cmd_vel"   to="move_base/cmd_vel"/>
+        <!-- <remap from="cmd_vel"   to="move_base/cmd_vel"/> -->
     </node>
 
 </launch>

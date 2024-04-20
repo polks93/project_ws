@@ -29,6 +29,8 @@ TebLocalPlannerROS:
 
   footprint_model:
     type:     "point"
+    # type:     "circular"
+    # radius:   0.08
 
   # GoalTolerance    
   xy_goal_tolerance:      0.05

@@ -3,9 +3,9 @@
 MapProcesser::MapProcesser(ros::NodeHandle* nodehandle) :	nh_(*nodehandle) {
 	std::string map_topic, map_processed_topic, cells_topic;
 
-	nh_.getParam("/map_topic", map_topic);
-	nh_.getParam("/processed_map_topic", map_processed_topic);
-	nh_.getParam("/changed_cells_topic", cells_topic);
+	nh_.getParam("map_topic", map_topic);
+	nh_.getParam("processed_map_topic", map_processed_topic);
+	nh_.getParam("changed_cells_topic", cells_topic);
 
 	sub = nh_.subscribe(cells_topic, 1, &MapProcesser::subscriberCallback, this);
 	pub = nh_.advertise<nav_msgs::OccupancyGrid>(map_processed_topic, 5, true);

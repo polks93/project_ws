@@ -69,7 +69,8 @@
             <rightJoint>right_wheel_joint</rightJoint>
             <wheelSeparation>${body_width + control_wheel_lenght}</wheelSeparation>
             <wheelDiameter>${2 * control_wheel_radius}</wheelDiameter>
-            <wheelTorque>500</wheelTorque>
+            <wheelTorque>20</wheelTorque>
+            <wheelAcceleration>1.8</wheelAcceleration>
             <commandTopic>cmd_vel</commandTopic>
             <odometryTopic>odom</odometryTopic>
             <odometryFrame>$(arg namespace)/odom</odometryFrame>
@@ -77,9 +78,9 @@
             <publishWheelTF>false</publishWheelTF>
             <publishOdomTF>true</publishOdomTF>
             <publishWheelJointState>true</publishWheelJointState>
-            <wheelAcceleration>0</wheelAcceleration>
             <odometrySource>world</odometrySource>
             <publishTf>true</publishTf>
+            <alwaysOn>true</alwaysOn>\
             <rosDebugLevel>na</rosDebugLevel>
         </plugin>
     </gazebo>

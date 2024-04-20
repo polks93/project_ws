@@ -3,7 +3,8 @@ Panels:
     Help Height: 78
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /Status1
       Splitter Ratio: 0.5088235139846802
     Tree Height: 719
   - Class: rviz/Selection
@@ -34,7 +35,7 @@ Visualization Manager:
     - Alpha: 0.5
       Cell Size: 1
       Class: rviz/Grid
-      Color: 160; 160; 164
+      Color: 136; 138; 133
       Enabled: true
       Line Style:
         Line Width: 0.029999999329447746
@@ -53,12 +54,12 @@ Visualization Manager:
       Class: rviz/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: Map
       Topic: /map
       Unreliable: false
       Use Timestamp: false
-      Value: false
+      Value: true
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -248,10 +249,10 @@ Visualization Manager:
       Value: false
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /visualization_marker
+      Marker Topic: /marker
       Name: Marker
       Namespaces:
-        "": true
+        to_occupied_cell_transitions: true
       Queue Size: 100
       Value: true
     - Alpha: 0.699999988079071
@@ -260,7 +261,7 @@ Visualization Manager:
       Draw Behind: false
       Enabled: true
       Name: Map
-      Topic: /custom_map
+      Topic: /processed_map
       Unreliable: false
       Use Timestamp: false
       Value: true
@@ -291,7 +292,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: -0.004999944008886814
+      Angle: 0.23499999940395355
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
@@ -301,10 +302,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 248.60015869140625
+      Scale: 21.614648818969727
       Target Frame: <Fixed Frame>
-      X: -2.939553737640381
-      Y: -4.694321632385254
+      X: -5.832422256469727
+      Y: 0.38576099276542664
     Saved: ~
 Window Geometry:
   Displays:

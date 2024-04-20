@@ -42,7 +42,7 @@ Grid::Grid(ros::NodeHandle* nodehandle, const nav_msgs::OccupancyGrid& map, bool
 	}
 
 	std::string	cells_topic;
-	nh_.getParam("/changed_cells_topic", cells_topic);
+	nh_.getParam("changed_cells_topic", cells_topic);
 	pub_cells = nh_.advertise<map_change_detection::ChangedCells>(cells_topic, 1, true);
 	updateMap();
 

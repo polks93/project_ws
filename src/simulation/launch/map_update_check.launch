@@ -66,8 +66,12 @@
         <param name="changed_cells_topic"   value="/total_changed_cells" />
     </node>
 
+    <!-- Obstacle detection node -->
+    <node pkg="map_change_detection" type="obstacle_detection.py" name="obstacle_detection_node" >
+        <param name="map_topic" value="/processed_map" />
+    </node>
 
     <!-- Launch rviz -->
-    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find simulation)/rviz_config/one_robot_map_update_check.rviz"/>
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find simulation)/rviz_config/two_robot_map_update_check.rviz"/>
 
 </launch>   

@@ -4,18 +4,6 @@
     <arg name="y"               default="0" />
     <arg name="Y"               default="0" />
 
-    <!-- Parameters for map merge node -->
-    <group ns="$(arg ns)/map_merge">
-        <param name="init_pose_x"   value="$(arg x)"/>
-        <param name="init_pose_y"   value="$(arg y)"/>
-        <param name="init_pose_z"   value="0.0"/>
-        <param name="init_pose_yaw" value="$(arg Y)"/>
-    </group>
-
-    <!-- Launch robot controller -->
-    <!-- <include file="$(find control)/launch/control.launch" >
-        <arg name="ns"              value="$(arg ns)" />
-    </include> -->
 
     <param name="/$(arg ns)/robot_description"
         command="$(find xacro)/xacro 
@@ -55,10 +43,15 @@
     </node>
 
     <!-- Gmapping node -->
-    <include file="$(find mapping)/launch/mapping.launch"  >
+    <!-- <include file="$(find mapping)/launch/mapping.launch"  >
         <arg name="ns"      value="$(arg ns)" />
-    </include>
+    </include> -->
 
+    <!-- Map change detection -->
+    <include file="$(find map_change_detection)/launch/start_map_update.launch" > 
+        <arg name="ns" value="$(arg ns)" />
+    </include>
+    
     <!-- Spawn Robot in Gazebo -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" ns="$(arg ns)"
           args="-urdf -model $(arg ns) -param /$(arg ns)/robot_description -x $(arg x) -y $(arg y) -Y $(arg Y)" />

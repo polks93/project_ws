@@ -8,10 +8,10 @@ TebLocalPlannerROS:
   dt_hysteresis:                      0.1
   max_samples:                        500
   min_sample:                         2
-  global_plan_overwrite_orientation:  False
+  global_plan_overwrite_orientation:  True
   allow_init_with_backwards_motion:   False
-  max_global_plan_lookahead_dist:     3.0
-  global_plan_viapoint_sep:           0.20
+  max_global_plan_lookahead_dist:     5.0
+  global_plan_viapoint_sep:           -0.20
   force_reinit_new_goal_dist:         1.0
   exact_arc_length:                   False
   feasibility_check_no_poses:         8 

@@ -104,7 +104,7 @@ def marker_maker():
     # my_map.info.origin.orientation.y = 0
     # my_map.info.origin.orientation.z = 0
     # my_map.info.origin.orientation.w = 1
-    # my_map.data[0] = -1
+    # my_map.data[1] = 100
 
 
     while not rospy.is_shutdown():
@@ -118,6 +118,8 @@ def marker_maker():
 
             buffer = list(my_map.data)
             buffer[index] = 100
+            buffer[0] = 100
+            buffer[703] = 100
             my_map.data = tuple(buffer)
 
         if laser_recived:

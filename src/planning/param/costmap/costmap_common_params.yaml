@@ -3,7 +3,7 @@ meter_scoring: true
 
 # robot_radius: 0.08
 footprint: [[0.075, 0.07], [-0.075, 0.07], [-0.075, -0.07], [0.075, -0.07]]
-inflation_radius: 0.08
+inflation_radius: 0.2
 
 obstacles_layer:
   enabled:                true
@@ -26,5 +26,5 @@ obstacles_layer:
 
 inflation_layer:
   enabled:              true
-  inflation_radius:     0.1
+  inflation_radius:     0.2
   cost_scaling_factor:  20.0

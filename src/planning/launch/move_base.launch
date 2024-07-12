@@ -18,7 +18,6 @@
         
         <!-- Correcting default value of frames -->
         <param name="global_costmap/robot_base_frame"                   value="$(arg ns)/base_link" />
-        <param name="local_costmap/global_frame"                        value="$(arg ns)/odom" />
         <param name="local_costmap/robot_base_frame"                    value="$(arg ns)/base_link" />
 
         <!-- Global costmap e AMCL usano il laser principale montato in alto -->

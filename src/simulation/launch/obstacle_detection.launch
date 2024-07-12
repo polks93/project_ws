@@ -1,0 +1,12 @@
+<launch>
+
+    <!-- Map file -->
+    <arg name="map_file"        default="$(find mapping)/map/dund_miff_map.yaml" />
+
+    <!-- Launch the map server -->
+    <node pkg="map_server" type="map_server" name="map_server" output="screen" args="$(arg map_file)"/>
+
+    <!-- Obstacle detection node -->
+    <node pkg="map_change_detection" type="obstacle_detection.py" name="obstacle_detection_node" output="screen" />
+
+</launch>

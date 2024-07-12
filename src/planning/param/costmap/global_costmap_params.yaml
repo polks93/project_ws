@@ -14,4 +14,4 @@ global_costmap:
    - {name: static_layer,     type: "costmap_2d::StaticLayer"}
    # L'obstacle layer serve se voglio includere i dati del laser nella global costmap
    - {name: obstacles_layer,  type: "costmap_2d::ObstacleLayer"}
-   - {name: inflater_layer,   type: "costmap_2d::InflationLayer"}
+   - {name: inflation_layer,   type: "costmap_2d::InflationLayer"}

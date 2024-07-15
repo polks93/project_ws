@@ -2,26 +2,25 @@
     <arg name="ns"      default="robot_0" />
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-        <rosparam file="$(find planning)/param/costmap/costmap_common_params.yaml" command="load" ns="global_costmap" />
-        <rosparam file="$(find planning)/param/costmap/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find test_move_base)/planning/param/costmap/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find test_move_base)/planning/param/costmap/costmap_common_params.yaml" command="load" ns="local_costmap" />
         
-        <rosparam file="$(find planning)/param/costmap/global_costmap_params.yaml" command="load" />
-        <rosparam file="$(find planning)/param/costmap/local_costmap_params.yaml"  command="load" />
-
-        <rosparam file="$(find planning)/param/move_base_params.yaml"                      command="load" />
+        <rosparam file="$(find test_move_base)/planning/param/costmap/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find test_move_base)/planning/param/costmap/local_costmap_params.yaml"  command="load" />
 
         <!-- Loading local and global planner parameters -->
         <rosparam file="$(find test_move_base)/planning/param/planner/base_local_planner_params.yaml"     command="load" />
+        <rosparam file="$(find test_move_base)/planning/param/move_base_params.yaml"                      command="load" />
         <rosparam file="$(find test_move_base)/planning/param/planner/base_global_planner_params.yaml"    command="load" />
 
         <!-- Global and local planners -->
         <param name="base_global_planner"                       value="navfn/NavfnROS" />
         <param name="base_local_planner"                        value="base_local_planner/TrajectoryPlannerROS"/>
-        
+
         <!-- Correcting default value of frames -->
         <param name="global_costmap/robot_base_frame"                   value="$(arg ns)/base_link" />
-        <param name="local_costmap/robot_base_frame"                    value="$(arg ns)/base_link" />
         <param name="local_costmap/global_frame"                        value="$(arg ns)/odom" />
+        <param name="local_costmap/robot_base_frame"                    value="$(arg ns)/base_link" />
 
         <!-- Global costmap e AMCL usano il laser principale montato in alto -->
         <rosparam param="global_costmap/obstacles_layer/scan"   subst_value="true">
@@ -43,8 +42,8 @@
             clearing: true,
             obstacle_range: 2.5,
             raytrace_range: 3.0}
-        </rosparam>
-        
+        </rosparam>    
+          
         <!-- Remapping of topics -->
         <remap from="map"       to="/map" />
     </node>

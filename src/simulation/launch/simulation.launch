@@ -8,7 +8,7 @@
     <arg name="headless"        default="false" />
     <arg name="debug"           default="false" />
     <arg name="paused"          default="false" />
-    <arg name="world_name"      default="$(find simulation)/worlds/dund_miff.world" />
+    <arg name="world_name"      default="$(find simulation)/worlds/dund_miff_obstacles.world" />
 
     <!-- Robot 1 parameters -->
     <arg name="ns_1"              default="robot_1" />

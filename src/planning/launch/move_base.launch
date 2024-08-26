@@ -46,7 +46,7 @@
         </rosparam>
         
         <!-- Remapping of topics -->
-        <remap from="map"       to="/map" />
+        <!-- <remap from="map"       to="/map" /> -->
     </node>
 
 </launch>

@@ -27,6 +27,7 @@ def goal_handler():
     x_0         = rospy.get_param("~x", "0")
     y_0         = rospy.get_param("~y", "0")
     waypoints   = rospy.get_param("/waypoints")
+    my_ns       = rospy.get_namespace()                 
 
     waypoints_sub = rospy.Subscriber("waypoint_assigned", WaypointAssigned, waypoint_callback, queue_size=1)
     client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
@@ -53,12 +54,13 @@ def goal_handler():
 
             client.wait_for_result()
             result = client.get_result()
-
+            
+            # Migliorare la gestione del result
             if result:
-                rospy.loginfo("GOAL HANDLER: goal reached number " + my_waypoints[k])
+                rospy.loginfo(my_ns + " GOAL HANDLER: goal reached number " + my_waypoints[k])
                 k = k + 1
             else: 
-                rospy.loginfo("moving to goal...")              
+                rospy.loginfo(my_ns + " moving to goal...")              
 
             if k == len(my_waypoints):
                 enable = False
@@ -76,10 +78,11 @@ def goal_handler():
             client.wait_for_result()
             result = client.get_result()
 
+            # Migliorare la gestione del result
             if result:
-                rospy.loginfo("GOAL HANDLER: inital position reached")
+                rospy.loginfo(my_ns + " GOAL HANDLER: inital position reached")
             else:
-                rospy.loginfo("moving to goal...") 
+                rospy.loginfo(my_ns + " moving to goal...") 
 
         rate.sleep()
 

@@ -102,7 +102,7 @@ def simulate_lidar_scan(occupancy_grid, lidar_pose, lidar_params):
             if row < 0 or row >= height or col < 0 or col >= width:
                 break  # Fuori dalla mappa, interrompi il raggio
             
-            if data[row, col] > 50:  # consideriamo occupato con soglia > 50
+            if data[row, col] > 50 or data[row, col] == -1:  # consideriamo occupato con soglia > 50
                 ranges[i] = r  # Aggiorna la distanza con il valore attuale
                 break  # Ostacolo incontrato, interrompi il raggio
     
@@ -180,12 +180,11 @@ def get_all_cells_from_lidar(occupancy_grid, lidar_pose, lidar_params, ranges):
     angle_min = -np.deg2rad(fov / 2)
     angle_max = np.deg2rad(fov / 2)
     angle_increment = np.deg2rad(resolution)
-    ray_index = int((angle_max - angle_min) / angle_increment)
     all_cells = set()
 
     angle = angle_min
     while angle <= angle_max:
-        cells = get_cells_from_ray(occupancy_grid, lidar_pose, angle, ranges[ray_index])
+        cells = get_cells_from_ray(occupancy_grid, lidar_pose, angle, ranges[int((angle - angle_min) / angle_increment)])
         all_cells.update(cells)
         angle += angle_increment
 
@@ -230,8 +229,8 @@ def test_gridmap():
     
     # Definisci la posa del LiDAR
     lidar_pose = Pose()
-    lidar_pose.position.x = 2.0
-    lidar_pose.position.y = 2.0
+    lidar_pose.position.x = -5.0
+    lidar_pose.position.y = 5.0
     lidar_pose.position.z = 0.0
     lidar_pose.orientation.x = 0.0
     lidar_pose.orientation.y = 0.0  

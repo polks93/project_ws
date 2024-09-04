@@ -27,12 +27,6 @@ def map_callback(msg):
     map_recived = True
     my_map = msg
 
-    # buffer = list(msg.data)
-    # buffer[0] = 100
-    # my_map.data = tuple(buffer)
-    # prova = buffer[0]
-    # rospy.loginfo(str(prova))
-
 def laser_callback(msg):
 
     global laser_recived
@@ -93,19 +87,6 @@ def marker_maker():
     laser_recived = False
     map_recived = False
     my_map = OccupancyGrid()
-    # my_map.header.frame_id = "custom_map"
-    # my_map.info.resolution = 0.05
-    # my_map.info.width = 2
-    # my_map.info.height = 2
-    # my_map.info.origin.position.x = 0
-    # my_map.info.origin.position.y = 0
-    # my_map.info.origin.position.z = 0
-    # my_map.info.origin.orientation.x = 0
-    # my_map.info.origin.orientation.y = 0
-    # my_map.info.origin.orientation.z = 0
-    # my_map.info.origin.orientation.w = 1
-    # my_map.data[1] = 100
-
 
     while not rospy.is_shutdown():
 
@@ -137,6 +118,9 @@ def marker_maker():
         marker_pub.publish(marker)
         map_pub.publish(my_map)
         rate.sleep()
+        
+        
+        
 if __name__ == '__main__':
     try:
         marker_maker()

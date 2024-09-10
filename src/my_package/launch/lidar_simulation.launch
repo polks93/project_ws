@@ -1,0 +1,11 @@
+<launch>
+    <!-- Avvia il map server per caricare la mappa locale -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find mapping)/map/dund_miff_map.yaml" />
+
+    <!-- Esegui lo script lidar_simulator -->
+    <node name="lidar_simulator" pkg="my_package" type="lidar_simulator.py" output="screen" />
+
+    <!-- Avvia RViz per visualizzare i dati del lidar -->
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find my_package)/config/lidar_simulator.rviz"/>
+</launch>

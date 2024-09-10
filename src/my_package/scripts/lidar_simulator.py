@@ -138,8 +138,6 @@ def simulate_lidar_scan(occupancy_grid, lidar_pose, lidar_params):
 
     return scan_msg, ranges, angles
 
-
-
 def simulate_lidar_scan2(occupancy_grid, lidar_pose, lidar_parameters):
     """
     Simula un LiDAR in una gridmap, restituendo un messaggio LaserScan.

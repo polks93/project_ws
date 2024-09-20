@@ -102,8 +102,8 @@ def lidar_simulator_node():
     map_recived = False
     
     # Definisci la posa del LiDAR
-    x = 8.0
-    y = 1.0
+    x = 0.0
+    y = 5.0
     theta = 0.0
     lidar_pose = [x, y, theta]
     
@@ -114,9 +114,9 @@ def lidar_simulator_node():
     rospy.Subscriber('/map', OccupancyGrid, occupancy_grid_callback, queue_size=10)
     
     # Publisher per i MarkerArray
-    visible_cells_publisher = rospy.Publisher('/visible_cells', MarkerArray, queue_size=10)
-    frontier_cells_publisher = rospy.Publisher('/frontier_cells', MarkerArray, queue_size=10)
-    contour_cells_publisher = rospy.Publisher('/contour_cells', MarkerArray, queue_size=10)
+    visible_cells_publisher     = rospy.Publisher('/visible_cells', MarkerArray, queue_size=10)
+    frontier_cells_publisher    = rospy.Publisher('/frontier_cells', MarkerArray, queue_size=10)
+    contour_cells_publisher     = rospy.Publisher('/contour_cells', MarkerArray, queue_size=10)
     
     while not rospy.is_shutdown():
         

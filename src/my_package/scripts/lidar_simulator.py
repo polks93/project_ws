@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 
+
+
+
+""" ------------------------------- NON FUNZIONA ------------------------------- """
+
+
+
+
+
+
 import rospy
 import numpy as np
 import tf

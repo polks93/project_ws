@@ -118,10 +118,22 @@ def lidar_simulator_node():
     frontier_cells_publisher    = rospy.Publisher('/frontier_cells', MarkerArray, queue_size=10)
     contour_cells_publisher     = rospy.Publisher('/contour_cells', MarkerArray, queue_size=10)
     
+    """Test inflation mappa"""
+    # my_map_publisher            = rospy.Publisher('/my_map', OccupancyGrid, queue_size=10)
+    # map_msg = OccupancyGrid()
+    # infalted = False
     while not rospy.is_shutdown():
         
         if map_recived:
-            my_map = OccupancyGridWrapper(map)            
+            my_map = OccupancyGridWrapper(map)  
+
+            """Test inflation mappa"""
+            # if not infalted:
+            #     infalted = True
+            #     my_map.inflate_gridmap_around_position([12,15], 0.5, 1.0) 
+            # map_msg = my_map.grid  
+            # my_map_publisher.publish(map_msg)
+            
             angles, ranges, visible_cells = lidar_raycast(lidar_pose, lidar_params, my_map)
             frontier_cells = find_frontier_cells(my_map, visible_cells)
             contour_cells = find_contour_cells(my_map, visible_cells)

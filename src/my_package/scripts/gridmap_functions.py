@@ -1,4 +1,5 @@
 import numpy as np
+import rospy
 
 """ Classe che si dovrebbe interfacciare correttamente con ROS """
 
@@ -80,12 +81,68 @@ class OccupancyGridWrapper:
             
 
     def update_ros_grid(self, cell, value):
+        """
+        Aggiorna il valore di una cella specifica nella griglia ROS.
+        Args:
+            cell (tuple): Una tupla (i, j) che rappresenta la posizione della cella nella griglia.
+            value (int): Il nuovo valore da assegnare alla cella specificata.
+        """
         i, j = cell
         buffer = list(self.grid.data)
         buffer[i * self.width + j] = value
         self.grid.data = tuple(buffer)
 
+    def inflate_gridmap_around_position(self, curr_position, inflation_radius, L):
+        """
+        Gonfia la mappa di occupazione attorno a una posizione specifica.
+        Questo metodo crea una mappa gonfiata copiando la mappa originale e aggiungendo celle occupate
+        attorno a una posizione specifica entro un raggio di inflazione dato. La mappa gonfiata viene
+        utilizzata per rappresentare ostacoli con un margine di sicurezza.
+        Args:
+            curr_position (tuple): La posizione corrente nel mondo (x, y).
+            inflation_radius (float): Il raggio di inflazione in metri.
+            L (float): La lunghezza del lato del quadrato in cui cercare celle occupate.
+        Returns:
+            None
+        """
+        self.inflated_map = np.copy(self.data)
+        occ_cells = set()
+        
+        curr_cell = self.world_to_grid(curr_position)
+        
+        # Calcola quante celle definiscono i bordi del quadrato
+        square_cells = int(np.ceil(L / (2 * self.resolution)))
+        
+        # Calcola quante celle definiscono il raggio di inflazione
+        inflation_cells = int(np.ceil(inflation_radius / self.resolution))
+        
+        # Scorro tutte le celle del quadrato
+        for i in range( - square_cells, square_cells + 1):
+            for j in range( - square_cells, square_cells + 1):
+                ni = curr_cell[0] + i
+                nj = curr_cell[1] + j
+                # Se le celle si trovano all'interno della mappa e sono occupate o sconosciute
+                if 0 <= ni < self.height and 0 <= nj < self.width:
+                    if self.get_cell([ni, nj]) == 100 or self.get_cell([ni, nj]) == -1:
+                        
+                        # Scorre tutte le celle dentro il raggio di inflazione
+                        for di in range(-inflation_cells, inflation_cells + 1):
+                            for dj in range(-inflation_cells, inflation_cells + 1):
+                                
+                                ni_inf = ni + di
+                                nj_inf = nj + dj
+                                # Controlla che la cella inflata sia entro il raggio e dentro la mappa
+                                if 0 <= ni_inf < self.height and 0 <= nj_inf < self.width:
+                                    distance = np.sqrt(di**2 + dj**2) * self.resolution
+                                        
+                                    if distance <= inflation_radius:
+                                        occ_cells.add((ni_inf, nj_inf))
 
+        for cell in occ_cells:
+            self.inflated_map[cell[0], cell[1]] = 100
+            """Test infation"""
+            # self.update_ros_grid(cell, 100)
+                        
 def lidar_raycast(pose, lidar_params, map):
     """
     Simula un raycast LIDAR su una mappa di occupazione.

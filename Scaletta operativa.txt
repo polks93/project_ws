@@ -1,31 +1,6 @@
-QUESTIONI ANCORA DA DECIDERE
-
-1) Come appaiono i robot?
-	- Spawn in una certa formazione già dentro l'edificio 
-	- Spawn fuori dall'edificio e enatrarci in "fila indiana
-
-2) A questo punto i robot si trovano dentro l'edificio in una certa formazione, da decidere,
-cosa devono fare subito dopo?
-	- Assegnazione degli waypoint, poi i robot si devono muovere in un certo ordine.
-	Eviterei di muoverli tutti insieme in un'unica stanza perchè potrebbero scontrarsi 
-	o fare casino.
-
-3) Una volta partiti verso il primo waypoint è necessario definire ogni quanto assegnare nuovi
-waypoint. Probabilmente la cosa più equa è quella di far partire l'elezione ogni tot secondi
-
-4) Come valutare la "bontà" dell'esplorazione?
-	- Distanza percorsa da ogni agente
-	- Tempo impiegato per eseguire il task
-
-5) Sicuramente sará necessario fare diversi test, anche sulla stessa mappa ma con diversi
-waypoint per avere una visione più generale.
-
-Quindi la sequenza delle operazioni sarà:
-
-1) Spawn robot (dentro o fuori dall'edificio)
-2) Formazione pronta a partire disposta in un certo modo (già da spawn oppure da raggiungere)
-3) Assegnazione primo waypoint a ciascun robot (probabilmente non basta assegnarne solamente uno ma 
-bisognerebbe già partire da una sequenza)
-4) Movimento verso gli waypoint 
-5) Update a intervalli temporali degli waypoint assegnati
-6) Termine delle operazione con robot che tornano fuori dall'edificio
+1) Prima squadra ci da i punti da visitare -> gestire output
+	salvare su yaml
+2) Seconda squadra legge lo yaml e va in esplorazione
+	- 1 mappa x orientarsi (data dalla prima squadra o quella nota all' inizio)
+	- 1 mappa da aggiornare (processed map della prima squadra)
+	- 1 mappa vuota x calcolare celle di frontiera/contorno

@@ -162,6 +162,7 @@ def lidar_raycast(pose, lidar_params, map):
     
     # Converto la posizione del robot da mondo a griglia
     x0, y0, theta0 = pose
+    theta0 = np.rad2deg(theta0)
     cell0 = map.world_to_grid([x0, y0])
     # x0, y0 = map.grid_to_world(cell0)
     
@@ -184,7 +185,7 @@ def lidar_raycast(pose, lidar_params, map):
     # Simulazione del raycast per ciascun raggio
     for i in range(ray_num):
         # Calcolo l'angolo assouluto del raggio i-esimo
-        angle = np.deg2rad(i * resolution + theta0)
+        angle = np.deg2rad((i - ray_num/2) * resolution + theta0)
         
         # Salvo il valore dell'angolo assoluto in gradi
         angles[i] = np.rad2deg(angle)

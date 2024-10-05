@@ -300,7 +300,8 @@ def waypoint_assignment():
                 if curr_state != prev_state:
                     result_msg.waypoint_id = 0
                     pub.publish(result_msg)
-                    
+                    rospy.signal_shutdown("Assegnazione waypoints completata")
+
 
             for i in range(len(other_agents)):
 

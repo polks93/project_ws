@@ -3,9 +3,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
+from gridmap_functions import lidar_raycast
+from lidar_simulator_v1 import find_frontier_cells, find_contour_cells
 
 class OccMatrix():
-    def __init__(self, dim=[10,10], occ_space=None, resolution=0.1, origin=[0, 0]):
+    def __init__(self, dim=[10,10], occ_space=None, unknown_space=None, resolution=0.1, origin=[0, 0]):
         """
         Inizializza una matrice di occupazione.
         
@@ -22,22 +24,39 @@ class OccMatrix():
         self.origin = origin  # Posizione in coordinate mondo dell'origine (cella [0,0])
         self.shape = [self.height, self.width]  # La forma della griglia (numero di righe, colonne)
         self.data = np.zeros(self.shape, dtype=int)  # Inizializza la griglia con valori liberi
-
-        if occ_space is not None:
-            min_cell = self.world_to_grid(occ_space[0], occ_space[1])
+        
+        np.random.seed(0)
+        
+        if unknown_space is not None:
+            min_cell = self.world_to_grid([unknown_space[0], unknown_space[1]])
             min_row = min_cell[0]
             min_col = min_cell[1]
             
-            max_cell = self.world_to_grid(occ_space[2], occ_space[3])
+            max_cell = self.world_to_grid([unknown_space[2], unknown_space[3]])
             max_row = max_cell[0]
             max_col = max_cell[1]
             
             for i in range(min_row, max_row + 1, 1):
                 for j in range(min_col, max_col + 1, 1):
-                    self.set_cell(i, j, 1)
+                    value = np.random.randint(2) * -1
+                    self.set_cell([i, j], value)
+                    
+        
+        if occ_space is not None:
+            min_cell = self.world_to_grid([occ_space[0], occ_space[1]])
+            min_row = min_cell[0]
+            min_col = min_cell[1]
+            
+            max_cell = self.world_to_grid([occ_space[2], occ_space[3]])
+            max_row = max_cell[0]
+            max_col = max_cell[1]
+            
+            for i in range(min_row, max_row + 1, 1):
+                for j in range(min_col, max_col + 1, 1):
+                    self.set_cell([i, j], 100)
             
     
-    def world_to_grid(self, x, y):
+    def world_to_grid(self, position):
         """
         Converte le coordinate mondo (x, y) in coordinate griglia (riga, colonna).
         
@@ -47,11 +66,12 @@ class OccMatrix():
         Returns:
         - [riga, colonna]: Coordinate della griglia.
         """
+        x, y = position
         colonna = int((x - self.origin[0]) / self.resolution)
         riga = int((y - self.origin[1]) / self.resolution)
         return [riga, colonna]
 
-    def grid_to_world(self, i, j):
+    def grid_to_world(self, cell):
         """
         Converte le coordinate griglia (riga, colonna) in coordinate mondo (x, y).
         
@@ -61,12 +81,13 @@ class OccMatrix():
         Returns:
         - [x, y]: Coordinate mondo del centro della cella.
         """
+        i, j = cell
         # Calcola le coordinate del centro della cella (i, j)
         x = self.origin[0] + (j + 0.5) * self.resolution
         y = self.origin[1] + (i + 0.5) * self.resolution
         return [x, y]
 
-    def set_cell(self, riga, colonna, value):
+    def set_cell(self, cell, value):
         """
         Imposta il valore di una cella nella matrice di occupazione.
         
@@ -74,10 +95,11 @@ class OccMatrix():
         - riga, colonna: Coordinate della cella nella griglia.
         - value: Valore da impostare (0 = libero, 1 = occupato, -1 = sconosciuto).
         """
+        riga, colonna = cell
         if 0 <= riga < self.height and 0 <= colonna < self.width:
             self.data[riga, colonna] = value
 
-    def get_cell(self, riga, colonna):
+    def get_cell(self, cell):
         """
         Ottiene il valore di una cella nella matrice di occupazione.
         
@@ -87,6 +109,7 @@ class OccMatrix():
         Returns:
         - Valore della cella (0 = libero, 1 = occupato, -1 = sconosciuto).
         """
+        riga, colonna = cell
         if 0 <= riga < self.height and 0 <= colonna < self.width:
             return self.data[riga, colonna]
         else:
@@ -141,9 +164,9 @@ def generate_random_state(R, curr_state, workspace, map):
         y = r * np.sin(alpha) + Cy
         
         if boundary_check(workspace, x, y):
-            cell = map.world_to_grid(x,y)
+            cell = map.world_to_grid([x,y])
             
-            if map.get_cell(cell[0], cell[1]) == 0:
+            if map.get_cell(cell) == 0:
                 sample_found = True
 
     return np.array([x, y])
@@ -263,8 +286,8 @@ def generate_new_node(nearest_state, sample, T_max, unicycle_params, map, worksp
             return np.array([]), np.array([]), False
         
         # Check collisione con cella occupata o sconosciuta  
-        cell = map.world_to_grid(x, y)
-        if map.get_cell(cell[0], cell[1]) == -1 or map.get_cell(cell[0], cell[1]) == 1:
+        cell = map.world_to_grid([x, y])
+        if map.get_cell(cell) == -1 or map.get_cell(cell) == 100:
             return np.array([]), np.array([]), False
 
         # Aggiorno il percorso al nuovo stato
@@ -301,6 +324,36 @@ def find_total_path(tree, node_id):
 
     return total_path
 
+def evaluate_sample(sample, map, weights, lidar_params)-> float:
+    """
+    Valuta un campione dato utilizzando una funzione di valore basata su celle di frontiera e di contorno.
+    Args:
+        sample (tuple): Coordinate del campione da valutare.
+        map (object): Mappa dell'ambiente in cui si trova il campione.
+        weights (dict): Dizionario contenente i pesi per le celle di frontiera e di contorno.
+            - 'w_frontier' (float): Peso per le celle di frontiera.
+            - 'w_contour' (float): Peso per le celle di contorno.
+        lidar_params (dict): Parametri per la simulazione del LIDAR.
+    Returns:
+        float: Valore calcolato per il campione basato sulla funzione di valore.
+    """
+    
+    w_frontier = weights['w_frontier']
+    w_contour = weights['w_contour']
+    
+    angles, ranges, visible_cells = lidar_raycast(sample, lidar_params, map)
+    
+    if np.min(ranges) < 0.5:
+        return -1
+    
+    frontier_cells = find_frontier_cells(visible_cells=visible_cells, map=map)
+    contour_cells = find_contour_cells(visible_cells=visible_cells, map=map)
+    
+    N_frontier = len(frontier_cells)
+    N_contour = len(contour_cells)
+    value_function = w_frontier * N_frontier + w_contour * N_contour
+    
+    return value_function
 
 def generate_RRT_samples(workspace, map, curr_pose, sampling_params, unicycle_params):
     """
@@ -317,52 +370,84 @@ def generate_RRT_samples(workspace, map, curr_pose, sampling_params, unicycle_pa
             - 'K_omega' (float): Guadagno per il controllo della velocità angolare.
             - 'dt' (float): Passo di tempo per l'integrazione.
     Returns:
-        None
+        - tree (dict): Dizionario che rappresenta l'albero RRT. Le chiavi sono gli ID dei nodi e i valori sono dizionari con informazioni sul nodo.
+        - samples (numpy.ndarray): Un array numpy che contiene i campioni
     """
+    # Parametri campionamento
+    R           = sampling_params['R']
+    N_samples   = sampling_params['N_samples']
+    T_max       = sampling_params['T_max']
     
-    R = sampling_params['R']
-    N_samples = sampling_params['N_samples']
-    T_max = sampling_params['T_max']
-    
-    v_max = unicycle_params['v_max']
-    omega_max = unicycle_params['omega_max']
-    K_omega = unicycle_params['K_omega']
-    dt = unicycle_params['dt']
-    
+    # Init tree con solo il nodo iniziale
     tree = {}
     update_tree(tree, curr_pose, -1, np.array([]))
     
+    # Generazione N_samples campioni
     while len(tree) <= N_samples:
+        
+        # Genero campione casuale in una cella ammissibile [libera e dentro il workspace]
         sample = generate_random_state(R, curr_pose, workspace, map)
+        
+        # Cerco il nodo più vicino all'interno dell'albero [distanza euclidea]
         nearest_id, nearest_state = find_nearest_node(sample, tree)
+        
+        # Cerco di generare un nuovo nodo valido verso il campione
         new_node, path_to_node, node_found = generate_new_node(nearest_state, sample, T_max, unicycle_params, map, workspace)
+        
+        # Se il nodo è valido, lo aggiungo all'albero
         if node_found:
             update_tree(tree, new_node, nearest_id, path_to_node)
     
-    samples = np.zeros((N_samples, 3))
-    
-    # Iter sugli elementi del dizionario tree, saltando il primo (tree[0]) che è il nodo iniziale
-    for i, key in enumerate(list(tree.keys())[1:]):  
-        samples[i] = tree[key]['state']
-        
+    # Elenco dei campioni generati
+    samples = np.array([tree[i]['state'] for i in tree])
+ 
     return tree, samples
     
 def main():
     workspace = [0,0,10,10]
     occ_space = [4,4,6,6]
-    map = OccMatrix(dim=[10,10], occ_space=occ_space)
+    unknown_space = [5,5,10,10]
+    map = OccMatrix(dim=[10,10], occ_space=occ_space, unknown_space=unknown_space)
     
-    start_pose = np.array([1,1,0])
+    start_pose = np.array([3.5,5,0])
     
+    lidar_params = {'ray_num': 360, 'resolution': 1, 'max_range': 1.0}
     sampling_params = {'R': 3, 'N_samples': 50, 'T_max': 0.5}
     unicycle_params = {'v_max': 1.0, 'omega_max': 5.0, 'K_omega': 2.0, 'dt': 0.01}
-    total_path = np.array([])
-    curr_pose = start_pose
-
-    tree, samples = generate_RRT_samples(workspace, map, curr_pose, sampling_params, unicycle_params)
-
-    tot_path = find_total_path(tree, len(tree)-1)
+    weights = {'w_frontier': 0.1, 'w_contour': 9}
     
+    curr_pose = start_pose
+    
+    valid_samples_found = False
+    counter = 0
+    
+    while not valid_samples_found:
+        if counter > 0:
+            print('No valid samples found. Retrying...')
+            
+            unicycle_params['v_max'] = unicycle_params['v_max'] / 2
+            unicycle_params['omega_max'] += 0.1
+            unicycle_params['K_omega'] += 0.1
+            
+        tree, samples = generate_RRT_samples(workspace, map, curr_pose, sampling_params, unicycle_params)
+
+        value_function = np.zeros(len(samples))
+        
+        for i in range(len(samples)):
+            value_function[i] = evaluate_sample(samples[i], map, weights, lidar_params)
+        
+        if np.max(value_function) > 0:
+            valid_samples_found = True
+            counter += 1
+            
+    id_best_sample = np.argmax(value_function) 
+    best_sample = samples[id_best_sample]
+    total_path = find_total_path(tree, id_best_sample)
+    
+    _, _, visible_cells = lidar_raycast(best_sample, lidar_params, map)
+    frontier_cells = find_frontier_cells(visible_cells=visible_cells, map=map)
+    contour_cells = find_contour_cells(visible_cells=visible_cells, map=map)
+        
     # Creare la colormap: grigio (sconosciuto), bianco (libero), nero (occupato)
     plt.figure(figsize=(20,20))
     cmap = colors.ListedColormap(['gray', 'white', 'black'])
@@ -381,15 +466,26 @@ def main():
     plt.imshow(map.data, cmap=cmap, norm=norm, origin='lower', extent=extent)
     plt.scatter(start_pose[0], start_pose[1])
 
+    # Plot dell'albero RRT
     for i in range(1, len(tree)):
         path = tree[i]['path']
         x = [sample[0] for sample in path]
         y = [sample[1] for sample in path]
         plt.plot(x, y, color='blue')
-        
-    x = [pose[0] for pose in tot_path]
-    y = [pose[1] for pose in tot_path]
+    
+    # Plot del path verso campione migliore   
+    x = [pose[0] for pose in total_path]
+    y = [pose[1] for pose in total_path]
     plt.plot(x,y, color='red')
+    
+    # Plot celle di frontiera e celle di contorno
+    for cell in frontier_cells:
+        x, y = map.grid_to_world(cell)
+        plt.scatter(x, y, color='green')
+    
+    for cell in contour_cells:
+        x, y = map.grid_to_world(cell)
+        plt.scatter(x, y, color='orange')
     
     plt.show()    
 

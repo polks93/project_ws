@@ -9,7 +9,7 @@
 
 <!--Map change detection -->
 
-<node pkg="map_change_detection" name="map_updater" type="map_change_detection_node" output="screen" ns="$(arg ns)">
+<node pkg="map_change_detection" name="map_updater" type="map_change_detection_node" ns="$(arg ns)">
     <param name="visualize_on_rviz"     value="$(arg gui)"/>
     <param name="visualize_debug_stuff" value="$(arg debug_visualization)"/>
     <param name="base_frame"            value="$(arg ns)/base_link" />

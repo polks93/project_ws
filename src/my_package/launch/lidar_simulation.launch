@@ -1,6 +1,6 @@
 <launch>
     <!-- Avvia il map server per caricare la mappa locale -->
-    <node name="map_server" pkg="map_server" type="map_server" args="$(find my_package)/maps/map_test.yaml" />
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find mapping)/map/dund_miff_map.yaml" />
 
     <!-- Esegui lo script lidar_simulator -->
     <node name="lidar_simulator" pkg="my_package" type="lidar_simulator_v1.py" output="screen" />

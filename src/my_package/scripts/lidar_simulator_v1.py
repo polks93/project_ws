@@ -30,38 +30,39 @@ def find_neighbors(cell, map):
 """Funzione che trova le celle di frontiera"""
 def find_frontier_cells(map, visible_cells):
     frontier_cells = set()
-    for cell in visible_cells:
-        # Cerco le celle libere in visible_cells
-        if map.get_cell(cell) == 0:
-            neighbors = find_neighbors(cell, map)
-            # Cerco i vicini delle celle libere che siano di occupazione sconosciuta
-            for neighbor in neighbors:
-                if map.get_cell(neighbor) == -1:
-                    frontier_cells.add(tuple(cell))
-                    continue
+    if visible_cells is not None:
+        for cell in visible_cells:
+            # Cerco le celle libere in visible_cells
+            if map.get_cell(cell) == 0:
+                neighbors = find_neighbors(cell, map)
+                # Cerco i vicini delle celle libere che siano di occupazione sconosciuta
+                for neighbor in neighbors:
+                    if map.get_cell(neighbor) == -1:
+                        frontier_cells.add(tuple(cell))
+                        continue
             
     return frontier_cells
 
 """Funzione che trova le celle di contorno"""
 def find_contour_cells(map, visible_cells):
     contour_cells = set()
-    
-    for cell in visible_cells:
-        free = False
-        occupied = False
-        # Cerco le celle sconosciute in visible_cells
-        if map.get_cell(cell) == -1:
-            neighbors = find_neighbors(cell, map)
-            
-            # Cerco i vicini delle celle libere che siano di occupazione sconosciuta
-            for neighbor in neighbors:
-                if map.get_cell(neighbor) == 0:
-                    free = True
-                elif map.get_cell(neighbor) > 50:
-                    occupied = True
-            
-            if free and occupied:
-                contour_cells.add(tuple(cell))
+    if visible_cells is not None:
+        for cell in visible_cells:
+            free = False
+            occupied = False
+            # Cerco le celle sconosciute in visible_cells
+            if map.get_cell(cell) == -1:
+                neighbors = find_neighbors(cell, map)
+                
+                # Cerco i vicini delle celle libere che siano di occupazione sconosciuta
+                for neighbor in neighbors:
+                    if map.get_cell(neighbor) == 0:
+                        free = True
+                    elif map.get_cell(neighbor) > 50:
+                        occupied = True
+                
+                if free and occupied:
+                    contour_cells.add(tuple(cell))
                 
     return contour_cells
 
@@ -103,12 +104,12 @@ def lidar_simulator_node():
     
     # Definisci la posa del LiDAR
     x = 0.0
-    y = 5.0
+    y = 0.0
     theta = 0.0
     lidar_pose = [x, y, theta]
     
     # Definisco lidar parameters
-    lidar_params = {'ray_num': 360, 'resolution': 1, 'max_range': 3.0}
+    lidar_params = {'ray_num': 60, 'resolution': 1, 'max_range': 3.0}
     
     # Subscriber per la OccupancyGrid, passando anche i parametri del LiDAR e la sua posa
     rospy.Subscriber('/map', OccupancyGrid, occupancy_grid_callback, queue_size=10)

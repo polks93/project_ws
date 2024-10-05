@@ -71,6 +71,8 @@
         <param name="map_topic" value="/processed_map" />
     </node>
 
+    <node pkg="my_package" type="done_first_squad.py" name="done_first_squad" output="screen" />
+    
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(find simulation)/rviz_config/two_robot_navigation.rviz"/>
 
 </launch>

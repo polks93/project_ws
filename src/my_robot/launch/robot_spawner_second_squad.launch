@@ -32,11 +32,10 @@
     </group>
     
     <!-- Box assignment node -->
-    <!-- <node name="box_assignment" pkg="my_package" type="box_assignment.py" ns="$(arg ns)">
+    <node name="box_assignment" pkg="my_package" type="box_assignment.py" ns="$(arg ns)">
         <param name="x" value="$(arg x)" />
         <param name="y" value="$(arg y)" />
-        <param name="Y" value="$(arg Y)" />
-    </node> -->
+    </node>
 
 
     <!-- Gmapping node -->

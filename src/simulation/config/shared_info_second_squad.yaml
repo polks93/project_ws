@@ -1,0 +1,10 @@
+x_min: &x_min -17
+x_max: &x_max 17
+y_min: &y_min -12
+y_max: &y_max 5
+
+# Dimensione del workspace
+workspace: [*x_min, *y_min, *x_max, *y_max]
+
+# Numero complessivo di agenti
+n_robot: 2

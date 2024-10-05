@@ -1,0 +1,27 @@
+<launch>
+    <!-- Global parameters -->
+    <rosparam   file="$(find simulation)/config/shared_info_second_squad.yaml" command="load" />
+
+    <!-- Map file -->
+    <!-- <arg name="map_file"        default="$(find mapping)/map/processed_map.yaml" /> -->
+
+    <!-- Launch the map server -->
+    <!-- <node pkg="map_server" type="map_server" name="map_server" output="screen" args="$(arg map_file)"/> -->
+
+    <!-- Robot 1 parameters -->
+    <arg name="ns_1"              default="robot_1" />
+    <arg name="x_1"               default="-12" />
+    <arg name="y_1"               default="-2" />
+    <arg name="Y_1"               default="0" />
+
+    <!-- Circles positions -->
+    <rosparam   file="$(find simulation)/config/circles.yaml" command="load" param="circles" />
+
+    <!-- Launch the second squad init -->
+    <node pkg="my_package" type="second_squad_init.py" name="second_squad_init" output="screen" />
+
+    <node pkg="my_package" type="box_assignment.py" name="box_assignment" output="screen" ns="$(arg ns_1)">
+        <param name="x" value="$(arg x_1)" />
+        <param name="y" value="$(arg y_1)" />
+    </node>
+</launch>

@@ -18,7 +18,8 @@ global_costmap:
 
    static_layer:
       map_topic: "/map"
-      subscribe_to_updates: false
+      subscribe_to_updates: true
+
 
    obstacles_layer:
       observation_sources: scan

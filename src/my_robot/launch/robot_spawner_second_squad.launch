@@ -26,10 +26,23 @@
 
     <!-- Move base node -->
     <group ns="$(arg ns)" >
-        <include file="$(find test_move_base)/planning/launch/move_base.launch" >
+        <include file="$(find planning)/launch/move_base_second_squad.launch" >
             <arg name="ns" value="$(arg ns)" />
         </include>
     </group>
+    
+    <!-- Box assignment node -->
+    <!-- <node name="box_assignment" pkg="my_package" type="box_assignment.py" ns="$(arg ns)">
+        <param name="x" value="$(arg x)" />
+        <param name="y" value="$(arg y)" />
+        <param name="Y" value="$(arg Y)" />
+    </node> -->
+
+
+    <!-- Gmapping node -->
+    <!-- <include file="$(find mapping)/launch/mapping.launch"  >
+        <arg name="ns"      value="$(arg ns)" />
+    </include> -->
     
     <!-- Spawn Robot in Gazebo -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" ns="$(arg ns)"

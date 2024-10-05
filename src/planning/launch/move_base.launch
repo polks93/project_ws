@@ -11,8 +11,8 @@
         <rosparam file="$(find planning)/param/move_base_params.yaml"                      command="load" />
 
         <!-- Loading local and global planner parameters -->
-        <rosparam file="$(find test_move_base)/planning/param/planner/base_local_planner_params.yaml"     command="load" />
-        <rosparam file="$(find test_move_base)/planning/param/planner/base_global_planner_params.yaml"    command="load" />
+        <rosparam file="$(find planning)/param/planner/base_local_planner_params.yaml"     command="load" />
+        <rosparam file="$(find planning)/param/planner/base_global_planner_params.yaml"    command="load" />
 
         <!-- Global and local planners -->
         <param name="base_global_planner"                       value="navfn/NavfnROS" />

@@ -32,11 +32,13 @@
     </group>
     
     <!-- Box assignment node -->
-    <node name="box_assignment" pkg="my_package" type="box_assignment.py" ns="$(arg ns)">
+    <node name="box_assignment" pkg="my_package" type="box_assignment.py" ns="$(arg ns)" output="screen">
         <param name="x" value="$(arg x)" />
         <param name="y" value="$(arg y)" />
     </node>
 
+    <!-- Goal handler node -->
+    <!-- <node name="goal_handler_second_squad" pkg="my_package" type="goal_handler_second_squad.py" ns="$(arg ns)" output="screen" /> -->
 
     <!-- Gmapping node -->
     <!-- <include file="$(find mapping)/launch/mapping.launch"  >

@@ -92,7 +92,7 @@ def generate_bounding_boxes(global_circles):
     
     circles = copy.deepcopy(global_circles) 
     
-    bounding_boxes = [get_bounding_box(circle, safe_distance=1) for circle in circles]
+    bounding_boxes = [get_bounding_box(circle, safe_distance=0.5) for circle in circles]
 
     merged_boxes = []
     while circles:
@@ -118,7 +118,7 @@ def generate_bounding_boxes(global_circles):
 
 def adjust_bounding_box(box, min_size):
     """
-    Regola un bounding box per garantire che abbia una dimensione minima specificata.
+    Regola un bounding box per garantire che abbia una dimensione minima specificata e che non esca dal workspace.
     Args:
         box (tuple): Una tupla contenente le coordinate del bounding box (x_min, y_min, x_max, y_max).
         min_size (float): La dimensione minima desiderata per la larghezza e l'altezza del bounding box.
@@ -126,7 +126,9 @@ def adjust_bounding_box(box, min_size):
         tuple: Una tupla contenente le nuove coordinate del bounding box (x_min, y_min, x_max, y_max),
                regolate per garantire che la larghezza e l'altezza siano almeno min_size.
     """
-
+    global workspace
+    
+    x_min_ws, y_min_ws, x_max_ws, y_max_ws = workspace
     x_min, y_min, x_max, y_max = box
     
     # Calcolare la larghezza e l'altezza attuali
@@ -147,6 +149,16 @@ def adjust_bounding_box(box, min_size):
         y_min = center_y - min_size/2
         y_max = center_y + min_size/2
     
+    # Regola il bounding box per garantire che non esca dal workspace
+    if x_min < x_min_ws:
+        x_min = x_min_ws
+    if y_min < y_min_ws:
+        y_min = y_min_ws
+    if x_max > x_max_ws:
+        x_max = x_max_ws
+    if y_max > y_max_ws:
+        y_max = y_max_ws
+      
     return x_min, y_min, x_max, y_max
 
 def plot_circles_and_boxes(circles, merged_boxes):
@@ -202,9 +214,14 @@ def publish_boxes(merged_boxes, pub):
     pub.publish(box_array_msg)
            
 def second_squad_init():
+    global workspace
+    
     rospy.init_node('second_squad_init')
     rate = rospy.Rate(30)
     
+    # Import parametri globali
+    workspace = rospy.get_param("/workspace")
+
     # Init publisher
     box_pub = rospy.Publisher('/boxes', BoundingBoxArray, queue_size=10)
     

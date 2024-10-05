@@ -1,6 +1,7 @@
 <launch>
     <!-- Global parameters -->
-    <rosparam   file="$(find simulation)/config/shared_info.yaml" command="load" />
+    <rosparam   file="$(find simulation)/config/shared_info_second_squad.yaml" command="load" />
+    <rosparam   file="$(find simulation)/config/circles.yaml" command="load" param="circles" />
 
     <!-- Map file -->
     <arg name="map_file"        default="$(find mapping)/map/processed_map.yaml" />
@@ -16,7 +17,7 @@
 
         <!-- Gazebo parameters -->
     <arg name="use_sim_time"    default="true" />
-    <arg name="gui"             default="true" />
+    <arg name="gui"             default="false" />
     <arg name="headless"        default="false" />
     <arg name="debug"           default="false" />
     <arg name="paused"          default="false" />
@@ -32,14 +33,11 @@
         <arg name="paused"          value="$(arg paused)" />
     </include>
 
-    <!-- Circles positions -->
-    <rosparam   file="$(find simulation)/config/circles.yaml" command="load" param="circles" />
-
     <!-- Launch the second squad init -->
     <node pkg="my_package" type="second_squad_init.py" name="second_squad_init" output="screen" />
 
     <!-- Launch Robot 1-->
-    <include file="$(find my_robot)/launch/robot_spawner_second_squad.launch" >
+    <include file="$(find my_robot)/launch/robot_spawner_second_squad.launch">
         <arg name="ns"              value="$(arg ns_1)" />
         <arg name="x"               value="$(arg x_1)" />
         <arg name="y"               value="$(arg y_1)" />

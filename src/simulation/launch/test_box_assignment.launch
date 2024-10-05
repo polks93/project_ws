@@ -3,10 +3,10 @@
     <rosparam   file="$(find simulation)/config/shared_info_second_squad.yaml" command="load" />
 
     <!-- Map file -->
-    <!-- <arg name="map_file"        default="$(find mapping)/map/processed_map.yaml" /> -->
+    <arg name="map_file"        default="$(find mapping)/map/processed_map.yaml" />
 
     <!-- Launch the map server -->
-    <!-- <node pkg="map_server" type="map_server" name="map_server" output="screen" args="$(arg map_file)"/> -->
+    <node pkg="map_server" type="map_server" name="map_server" output="screen" args="$(arg map_file)"/>
 
     <!-- Robot 1 parameters -->
     <arg name="ns_1"              default="robot_1" />
@@ -24,4 +24,7 @@
         <param name="x" value="$(arg x_1)" />
         <param name="y" value="$(arg y_1)" />
     </node>
+
+    <node type="rviz" name="rviz" pkg="rviz"/>
+
 </launch>

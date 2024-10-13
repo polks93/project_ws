@@ -5,6 +5,9 @@ import random
 from my_package.srv import NegotiateArea
 from second_squad_functions import generate_bounding_boxes
 
+GREEN = "\033[92m"
+RESET = "\033[0m"
+
 def init_boxes():
     """ 
     Calcolo i riquadri da esplorare a partire da circles disponibile come parametro globale 
@@ -38,8 +41,9 @@ class AgentNode:
         
     def negotiate_area(self):
         
-        rospy.loginfo("Agent %d inizia la negoziazione", self.my_id)
+        rospy.loginfo(f"{GREEN}Agent %d inizia la negoziazione{RESET}", self.my_id)
         while not rospy.is_shutdown() and self.available_areas:
+            
             area_id = random.choice(list(self.available_areas.keys()))
             distance = random.uniform(1.0, 10.0)
             
@@ -66,6 +70,7 @@ class AgentNode:
         while not rospy.is_shutdown():
             try:
                 response = self.negotiate_service(self.my_id, -1, 0.0)
+                
                 if response.assigned_area_id != -1:
                     if response.success:
                         rospy.loginfo(f"Agente {self.my_id}: {response.message}")
@@ -76,11 +81,11 @@ class AgentNode:
                 elif response.assigned_area_id == -1:
                     rospy.loginfo(f"Agente {self.my_id}: In attesa di assegnazione")
                     
-                elif response.assigned_area_id == -2:
-                    rospy.logwarn(f"Agente {self.my_id}: Assegnazione rifiutata, un altro agente è più vicino")
-                    if self.assigned_area in self.available_areas:
-                        del self.available_areas[self.assigned_area]
-                    break
+                # elif response.assigned_area_id == -2:
+                #     rospy.logwarn(f"Agente {self.my_id}: Assegnazione rifiutata, un altro agente è più vicino")
+                #     if self.assigned_area in self.available_areas:
+                #         del self.available_areas[self.assigned_area]
+                #     break
                 
             except rospy.ServiceException as e:
                 rospy.logerr(f"Service call failed: {e}")
@@ -95,11 +100,16 @@ class AgentNode:
             self.negotiate_area()
             
             if self.assigned_area is not None:
+                # RImuovo area assegnata da quelle disponibili
                 if self.assigned_area in self.available_areas:
                     del self.available_areas[self.assigned_area]
+                    
                 rospy.loginfo(f"Agente {self.my_id} Inizio esplorazione area {self.assigned_area}")
+                
+                # Simula esplorazione
                 exploration_time = random.uniform(5,10)
                 rospy.sleep(exploration_time)
+                
                 rospy.loginfo(f"Agente {self.my_id} Esplorazione area {self.assigned_area} completata")
                 self.assigned_area = None
                 

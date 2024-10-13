@@ -5,6 +5,12 @@ from threading import Lock, Thread
 import time
 from my_package.srv import NegotiateArea, NegotiateAreaResponse
 from second_squad_functions import generate_bounding_boxes
+GREEN = "\033[92m"
+RESET = "\033[0m"
+CYAN = "\033[96m"
+RED = "\033[91m"
+BOLD = "\033[1m"
+
 
 def init_boxes():
     """ 
@@ -68,15 +74,15 @@ class CentralNode:
                     )
             else:
                 # Richiesta iniziale di assegnazione
-                rospy.loginfo(f"Ricevuta richiesta da Agente {agent_id} per Area {area_id} con distanza {distance:.2f}")
+                rospy.loginfo(f"{CYAN}Ricevuta richiesta da Agente {agent_id} per Area {area_id} con distanza {distance:.2f}{RESET}")
 
                 # Controlla se l'area esiste
                 if area_id not in self.available_areas:
-                    rospy.logwarn(f"Area {area_id} non esiste.")
+                    rospy.logwarn(f"Area {area_id} giá assegnata a un altro agente.")
                     return NegotiateAreaResponse(
                         success=False,
                         assigned_area_id=-1,
-                        message=f"Area {area_id} non esiste."
+                        message=f"Area {area_id} giá assegnata a un altro agente."
                     )
 
                 # Aggiungi la richiesta alla lista delle richieste in sospeso
@@ -99,9 +105,9 @@ class CentralNode:
                 )
 
     def assignment_cycle(self):
-        rospy.loginfo("Starting assignment cycle")
+        rospy.loginfo(f"{BOLD}{RED}Starting assignment cycle{RESET}")
         time.sleep(self.assignment_interval)
-        rospy.loginfo("Assignment cycle ended")
+        rospy.loginfo(f"{BOLD}{RED}Assignment cycle ended{RESET}")
 
         with self.lock:
             # Copia le richieste da elaborare

@@ -1,0 +1,9 @@
+# Richiesta
+int32 agent_id
+int32 area_id
+float32 distance
+---
+# Risposta
+bool success
+int32 assigned_area_id
+string message

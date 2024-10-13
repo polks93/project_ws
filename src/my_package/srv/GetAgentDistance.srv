@@ -1,0 +1,4 @@
+int8 client_candidate
+float64 client_distance
+---
+bool server_closer

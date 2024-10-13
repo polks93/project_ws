@@ -51,6 +51,9 @@ find_package(catkin REQUIRED COMPONENTS
 # Generate messages in the 'msg' folder
 add_message_files(
   FILES
+  ProposedBox.msg
+  AgentState.msg
+  BoxAssignment.msg
   WaypointAssigned.msg
   BoundingBox.msg
   BoundingBoxArray.msg
@@ -60,6 +63,10 @@ add_message_files(
 add_service_files(
   FILES
   PathLength.srv
+  GetAgentDistance.srv
+  GetAgentState.srv
+  StartNegotiations.srv
+  NegotiateArea.srv
 )
 
 ## Generate actions in the 'action' folder

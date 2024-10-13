@@ -1,0 +1,3 @@
+int8 agent_id
+---
+string agent_state

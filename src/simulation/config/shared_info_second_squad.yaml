@@ -7,4 +7,4 @@ y_max: &y_max 5
 workspace: [*x_min, *y_min, *x_max, *y_max]
 
 # Numero complessivo di agenti
-n_robot: 2
+n_robot: 3

@@ -4,3 +4,6 @@
 	- 1 mappa x orientarsi (data dalla prima squadra o quella nota all' inizio)
 	- 1 mappa da aggiornare (processed map della prima squadra)
 	- 1 mappa vuota x calcolare celle di frontiera/contorno
+
+
+base_local e base_global venivano da test_move_base

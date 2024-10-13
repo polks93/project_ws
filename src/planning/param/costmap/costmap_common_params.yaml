@@ -5,8 +5,6 @@ publish_voxel_map: false
 transform_tolerance: 0.1
 meter_scoring: true
 
-# robot_radius: 0.115
 footprint: [[0.075, 0.07], [-0.075, 0.07], [-0.075, -0.07], [0.075, -0.07]]
-# footprint_padding: 0.01
-# inflation_radius: 1
-# cost_scaling_factor: 12.0
+inflation_radius: 0.2
+cost_scaling_factor: 12.0
